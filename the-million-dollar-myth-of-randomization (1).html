@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Million-Dollar Myth of Randomization \u2014 Causal Threads</title>
+    <meta name="description" content="An insider's critique of the RCT gold standard. By Dr. Hafsa Benzzi \u2014 clinical trialist, dermatologist, and causal inference PhD candidate at Mount Sinai.">
+    <meta property="og:title" content="The Million-Dollar Myth of Randomization">
+    <meta property="og:description" content="I worked inside Phase III clinical trials. I believed in randomization like a religion. Then I started a PhD in causal inference and realized what the textbooks don't tell you.">
+    <meta property="og:type" content="article">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a2e;
+            --paper: #faf8f5;
+            --accent: #c0392b;
+            --accent-soft: #e8d5d0;
+            --muted: #6b7280;
+            --border: #e5e2dd;
+            --code-bg: #f1ede8;
+            --highlight: #fef3c7;
+            --serif: 'Instrument Serif', Georgia, serif;
+            --sans: 'DM Sans', -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.8;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            padding: 28px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: var(--paper);
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: var(--serif);
+            font-size: 22px;
+            color: var(--ink);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .logo em { color: var(--accent); font-style: italic; }
+        .logo:hover { color: var(--accent); }
+
+        .nav a {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover { color: var(--accent); }
+
+        /* ===== ARTICLE HEADER ===== */
+        .article-header {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 80px 32px 0;
+        }
+
+        .article-series {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .article-series::before {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .article-title {
+            font-family: var(--serif);
+            font-size: clamp(36px, 6vw, 52px);
+            line-height: 1.1;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            margin-bottom: 20px;
+        }
+
+        .article-subtitle {
+            font-family: var(--serif);
+            font-size: 22px;
+            font-style: italic;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #e74c3c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: var(--serif);
+            font-size: 18px;
+            font-style: italic;
+            flex-shrink: 0;
+        }
+
+        .meta-text {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .meta-name {
+            font-weight: 600;
+        }
+
+        .meta-details {
+            color: var(--muted);
+        }
+
+        .meta-tags {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-soft);
+            padding: 4px 10px;
+            border-radius: 2px;
+        }
+
+        /* ===== ARTICLE BODY ===== */
+        .article-body {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 48px 32px 80px;
+        }
+
+        .article-body p {
+            margin-bottom: 24px;
+            font-size: 17.5px;
+            line-height: 1.85;
+            color: #2d2d3a;
+        }
+
+        .article-body h2 {
+            font-family: var(--serif);
+            font-size: 30px;
+            font-weight: 400;
+            margin: 56px 0 20px;
+            color: var(--ink);
+            line-height: 1.25;
+        }
+
+        .article-body h3 {
+            font-family: var(--serif);
+            font-size: 22px;
+            font-weight: 400;
+            font-style: italic;
+            margin: 40px 0 16px;
+            color: var(--ink);
+        }
+
+        .lead {
+            font-size: 20px !important;
+            line-height: 1.7 !important;
+            color: var(--ink) !important;
+            font-weight: 300;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding: 4px 0 4px 28px;
+            margin: 36px 0;
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 21px;
+            color: #4a4a5a;
+            line-height: 1.6;
+        }
+
+        .pullquote {
+            border: none;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 32px 0;
+            margin: 48px 0;
+            text-align: center;
+            font-family: var(--serif);
+            font-size: 26px;
+            line-height: 1.4;
+            color: var(--ink);
+            font-style: normal;
+        }
+
+        .pullquote em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .highlight-box {
+            background: var(--highlight);
+            border-left: 4px solid #d97706;
+            padding: 24px 28px;
+            margin: 32px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .highlight-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-family: var(--mono);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #92400e;
+        }
+
+        .evidence-box {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 28px;
+            margin: 32px 0;
+            border-radius: 4px;
+        }
+
+        .evidence-box .label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .evidence-box p {
+            margin-bottom: 12px !important;
+            font-size: 15px !important;
+            line-height: 1.65 !important;
+        }
+
+        .numbered-point {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 16px;
+            margin: 28px 0;
+            align-items: start;
+        }
+
+        .numbered-point .num {
+            font-family: var(--serif);
+            font-size: 36px;
+            color: var(--accent-soft);
+            line-height: 1;
+            padding-top: 4px;
+        }
+
+        .numbered-point .content {
+            font-size: 16.5px;
+            line-height: 1.75;
+            color: #2d2d3a;
+        }
+
+        .numbered-point .content strong {
+            display: block;
+            font-family: var(--serif);
+            font-size: 19px;
+            font-weight: 400;
+            color: var(--ink);
+            margin-bottom: 6px;
+        }
+
+        /* ===== CLIFFHANGER / CTA ===== */
+        .cliffhanger-section {
+            background: var(--ink);
+            color: white;
+            padding: 48px 32px;
+            margin: 56px -32px 0;
+            border-radius: 4px;
+        }
+
+        .cliffhanger-section h2 {
+            font-family: var(--serif);
+            font-size: 28px;
+            font-weight: 400;
+            color: white;
+            margin: 0 0 16px;
+        }
+
+        .cliffhanger-section p {
+            color: #9ca3af;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .cliffhanger-section .accent-text {
+            color: #f87171;
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 20px;
+            line-height: 1.5;
+            margin: 24px 0;
+        }
+
+        .cliffhanger-section .cta-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .cta-btn.primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .cta-btn.primary:hover { background: #e74c3c; }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: #9ca3af;
+            border: 1px solid #374151;
+        }
+
+        .cta-btn.secondary:hover {
+            border-color: #f87171;
+            color: #f87171;
+        }
+
+        /* ===== AUTHOR BIO ===== */
+        .author-bio {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 48px;
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 20px;
+        }
+
+        .bio-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #e74c3c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: var(--serif);
+            font-size: 22px;
+            font-style: italic;
+        }
+
+        .bio-text h4 {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+
+        .bio-text p {
+            font-size: 14px !important;
+            color: var(--muted) !important;
+            line-height: 1.6 !important;
+            margin-bottom: 0 !important;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px;
+            text-align: center;
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .footer-copy a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .article-title { font-size: 32px; }
+            .meta-tags { margin-left: 0; margin-top: 8px; }
+            .numbered-point { grid-template-columns: 36px 1fr; gap: 12px; }
+            .pullquote { font-size: 22px; }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .article-header > * {
+            animation: fadeIn 0.5s ease-out both;
+        }
+
+        .article-header > :nth-child(2) { animation-delay: 0.08s; }
+        .article-header > :nth-child(3) { animation-delay: 0.14s; }
+        .article-header > :nth-child(4) { animation-delay: 0.2s; }
+
+        /* ===== READING PROGRESS ===== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 200;
+            transition: width 0.1s;
+            width: 0%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progress"></div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">Causal <em>Threads</em></a>
+            <nav class="nav">
+                <a href="index.html">All Posts</a>
+                <a href="white-papers.html">White Papers</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ARTICLE HEADER -->
+    <div class="article-header">
+        <div class="article-series">Post No. 01 &mdash; Methodology Series</div>
+        <h1 class="article-title">The Million-Dollar Myth of Randomization</h1>
+        <p class="article-subtitle">I worked inside Phase III clinical trials. I believed in randomization like a religion. Then I learned what the textbooks don&rsquo;t tell you about why the &ldquo;gold standard&rdquo; has cracks in its crown.</p>
+        <div class="article-meta">
+            <div class="author-avatar">H</div>
+            <div class="meta-text">
+                <div class="meta-name">Dr. Hafsa Benzzi</div>
+                <div class="meta-details">February 2026 &middot; 12 min read</div>
+            </div>
+            <div class="meta-tags">
+                <span class="tag">RCTs</span>
+                <span class="tag">Causal Inference</span>
+                <span class="tag">Methodology</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ARTICLE BODY -->
+    <article class="article-body">
+
+        <p class="lead">
+            Let me start with a confession. For the better part of a decade, I practiced medicine under a comforting belief: the randomized controlled trial is the gold standard of medical evidence, and everything else is lesser. I did not just believe this. I participated in building the temple. As part of the Phase III dupilumab trials that contributed to an FDA approval, I was inside the machinery of randomization. I saw its elegance. I administered its protocols. I trusted its output.
+        </p>
+
+        <p>
+            And I was wrong. Not about randomization being useful. It is. But about what it actually does, what it cannot do, and the uncomfortable gap between the two that most clinicians, regulators, and even many researchers never examine closely enough.
+        </p>
+
+        <p>
+            This post is not anti-RCT. It is anti-complacency. It is a careful, evidence-based argument that the pedestal we have placed randomization on is simultaneously deserved and dangerously misleading. If you prescribe medications, design trials, review evidence, or make policy based on &ldquo;Level 1 evidence,&rdquo; you need to understand the five structural problems I am about to lay out.
+        </p>
+
+        <h2>What Randomization Actually Does (and Doesn&rsquo;t Do)</h2>
+
+        <p>
+            The standard teaching goes like this: randomization eliminates confounding. You flip a coin, assign patients to treatment or control, and any difference in outcome must be caused by the treatment because the groups are balanced on all variables, measured and unmeasured. It is elegant. It is intuitive. And it is an oversimplification that borders on mythology.
+        </p>
+
+        <p>
+            Here is what randomization actually guarantees, in precise language: it ensures that treatment assignment is statistically independent of baseline covariates <em>in expectation</em>. Over infinite repetitions of the randomization procedure, the groups will be balanced. In any single trial, they may not be. This is not a pedantic distinction. It is the entire foundation of what makes small trials unreliable and what makes subgroup analyses from even large trials treacherous.
+        </p>
+
+        <blockquote>
+            Randomization does not eliminate confounding. It makes confounding random rather than systematic. That is a meaningful improvement. It is not the same thing as elimination.
+        </blockquote>
+
+        <p>
+            But the deeper problem is not statistical. It is conceptual. The reverence for randomization has calcified into a hierarchy of evidence that treats the RCT as categorically superior to all other study designs. This hierarchy, taught in every medical school and enshrined in every guideline committee, contains a logical error that I did not fully appreciate until I began studying causal inference formally.
+        </p>
+
+        <h2>The Five Cracks in the Crown</h2>
+
+        <p>
+            Allow me to lay out, one by one, the structural limitations of randomized trials that are not limitations of execution (those exist too) but limitations of the design itself. These are features, not bugs. They are baked into what an RCT is.
+        </p>
+
+        <div class="numbered-point">
+            <div class="num">1</div>
+            <div class="content">
+                <strong>The Eligibility Paradox</strong>
+                To conduct a clean trial, you must exclude messy patients. Patients with comorbidities, polypharmacy, extremes of age, non-adherence risk, psychiatric conditions. The very patients who will receive the drug once it is approved. The typical Phase III trial enrolls a population that represents, at best, 30 to 40 percent of the patients who will eventually be prescribed the medication. Some estimates put it as low as 15 percent. This means the internal validity that randomization provides comes at the direct expense of external validity. The trial answers a question precisely, but it may not be the question that matters in the clinic.
+            </div>
+        </div>
+
+        <div class="numbered-point">
+            <div class="num">2</div>
+            <div class="content">
+                <strong>The Time Horizon Problem</strong>
+                Most RCTs run for 12 to 52 weeks. Cardiovascular prevention trials are an exception, sometimes extending to 3 to 5 years. But chronic diseases last decades. A 52-week trial of a biologic for psoriasis tells you whether it works at one year. It tells you almost nothing about what happens at year five, whether the benefit persists, whether tolerance develops, whether long-term safety signals emerge. And yet clinical decisions are made for lifelong therapy based on one-year data. The RCT, by its finite design, generates a snapshot and we treat it as a movie.
+            </div>
+        </div>
+
+        <div class="numbered-point">
+            <div class="num">3</div>
+            <div class="content">
+                <strong>The Average Treatment Effect Illusion</strong>
+                This is the crack that, once you see it, you cannot unsee. An RCT reports an average treatment effect. Drug A reduces LDL by 40 mg/dL on average, or reduces PASI score by 75% in 60% of patients. But averages are fictions. No individual patient has the average treatment effect. Some patients benefit enormously. Some benefit modestly. Some do not benefit at all. And some are actively harmed. The average hides all of this. When I prescribed dupilumab to patients in practice, I did not give them the average response. I gave them <em>their</em> response. And their response depended on variables that the trial was not designed to detect.
+            </div>
+        </div>
+
+        <blockquote class="pullquote">
+            The RCT tells you that <em>a drug works</em>. It does not tell you <em>for whom it works</em>, <em>why it works</em>, or <em>what to do when it doesn&rsquo;t</em>. Those are the questions that actually matter in clinical practice.
+        </blockquote>
+
+        <div class="numbered-point">
+            <div class="num">4</div>
+            <div class="content">
+                <strong>The Comparison Constraint</strong>
+                An RCT can compare A to B. It cannot easily compare A to B to C to D in every possible sequence, combination, and duration. In cardiovascular prevention, a patient might be on an ACE inhibitor, a statin, aspirin, and a beta-blocker simultaneously. The number of possible combinations, doses, and sequences is combinatorially explosive. No trial can test them all. Yet clinical practice requires exactly these decisions. Should I add drug C or switch drug B? The RCT answers the question it was designed to ask, which is rarely the question the clinician is facing in the exam room.
+            </div>
+        </div>
+
+        <div class="numbered-point">
+            <div class="num">5</div>
+            <div class="content">
+                <strong>The Ethical Boundary</strong>
+                There are questions that matter enormously that we cannot ethically randomize. Can we randomize patients to receive no treatment for severe hypertension to see what happens? Can we randomize patients to a polypill versus their physician&rsquo;s individualized choice? Can we randomize patients by their genetic profile to treatment arms when we suspect harm in one subgroup? The answer, often, is no. And so the most important clinical questions, the ones where lives are most at stake, are precisely the ones where randomization cannot help us. We are left with observational data. And the evidence hierarchy says observational data is inferior. This is where the myth becomes dangerous.
+            </div>
+        </div>
+
+        <h2>The Hierarchy Problem</h2>
+
+        <p>
+            The evidence hierarchy, pyramid-shaped, with systematic reviews of RCTs at the top and case reports at the bottom, is one of the most influential conceptual models in modern medicine. It has also, I believe, done subtle but significant damage to how we think about evidence.
+        </p>
+
+        <p>
+            The hierarchy conflates study design with study quality. It assumes that an RCT is always superior to an observational study, regardless of how the RCT was conducted or what question it asked. But a well-designed observational study with appropriate causal methods, clear assumptions, sensitivity analyses, and a question that matches the clinical decision, can be more informative than a poorly designed RCT that answers the wrong question in the wrong population over the wrong time horizon.
+        </p>
+
+        <div class="highlight-box">
+            <strong>The key insight</strong>
+            The quality of causal inference does not depend on the study design alone. It depends on the transparency and plausibility of the assumptions required for a causal interpretation. Randomization is one way to justify those assumptions. It is not the only way. And when it comes at the cost of relevance, generalizability, and clinical applicability, the trade-off may not be worth it.
+        </div>
+
+        <p>
+            Sir Austin Bradford Hill, whose criteria are often cited in support of the RCT hierarchy, actually warned against exactly this rigidity. In his 1965 address to the Royal Society of Medicine, he argued that the demand for experimental evidence before acting on observational findings could sometimes cost lives. The relationship between smoking and lung cancer, one of the most consequential causal findings in medical history, was established entirely through observational data.
+        </p>
+
+        <h2>What I Saw Inside the Machine</h2>
+
+        <p>
+            Let me bring this back to lived experience. When I was working inside Phase III dupilumab trials, I observed things that the final publications do not capture.
+        </p>
+
+        <p>
+            I watched the eligibility criteria exclude the very patients I most wanted to treat. I saw how the controlled environment of a trial site, with its protocol visits, adherence monitoring, and nurse follow-ups, created conditions that would never exist in a busy dermatology clinic in Casablanca or Brooklyn. I noticed that the patients who responded beautifully in the trial were not always the same type of patients who responded in my practice afterward.
+        </p>
+
+        <p>
+            None of this means the trial was wrong. The dupilumab trials were rigorous, well-designed, and their conclusions were sound within the scope of the question they asked. But the scope of that question was narrower than we typically acknowledge. And the gap between what the trial told us and what clinicians needed to know was wider than the publications suggested.
+        </p>
+
+        <blockquote>
+            The trial proved that dupilumab works. It did not tell me which of my patients in Marrakech, with their different genetic backgrounds, different comorbidity profiles, different environmental exposures, would respond the way the average trial participant did.
+        </blockquote>
+
+        <h2>The Alternative Is Not Nihilism</h2>
+
+        <p>
+            I anticipate the objection: if not the RCT, then what? Are you arguing for anecdote-based medicine? For abandoning rigor?
+        </p>
+
+        <p>
+            Absolutely not. I am arguing for expanding our definition of rigor. The field of causal inference, developed over the past four decades by statisticians, epidemiologists, and computer scientists, provides formal mathematical frameworks for extracting causal conclusions from observational data under clearly stated assumptions. These are not informal, hand-waving arguments. They are precise, testable, and in many cases falsifiable.
+        </p>
+
+        <p>
+            Methods like target trial emulation allow researchers to design an observational study as if it were a trial, specifying eligibility criteria, treatment strategies, time zero, and outcomes with the same discipline applied to protocol design. The parametric g-formula handles time-varying confounding and competing risks in ways that standard regression cannot. Directed Acyclic Graphs make assumptions explicit and testable. These tools do not replace the RCT. They complement it. They fill the gaps that randomization, by its nature, cannot reach: the long-term question, the combinatorial question, the real-world population question, the ethical boundary question.
+        </p>
+
+        <div class="evidence-box">
+            <div class="label">The emerging consensus</div>
+            <p>
+                The FDA&rsquo;s Real-World Evidence Program, formalized under the 21st Century Cures Act, explicitly encourages the use of observational data for regulatory decisions. The European Medicines Agency has issued guidance on the use of real-world data for effectiveness evaluation. The field is moving not away from rigor, but toward a broader, more honest conception of what rigor means.
+            </p>
+        </div>
+
+        <h2>So Where Does This Leave Us?</h2>
+
+        <p>
+            If you are a clinician, it leaves you here: the evidence from RCTs is necessary but not sufficient. It answers one version of the question and leaves others unanswered. The next time you read a trial, ask yourself: does this population look like my patient? Does this time horizon match my clinical decision? Does the comparison reflect my actual choice? If the answer to any of these is no, you are extrapolating beyond what randomization can guarantee.
+        </p>
+
+        <p>
+            If you are a researcher, it leaves you here: the hierarchy of evidence is a starting heuristic, not a final judgment. The quality of a study depends on the quality of its assumptions and the transparency with which those assumptions are stated. A well-designed causal analysis with explicit assumptions can be more informative than a trial with hidden ones.
+        </p>
+
+        <p>
+            If you are a patient, it leaves you here: the drug that was proven effective in a trial was proven effective for the average participant in that trial. Whether it will work for you depends on factors the trial may not have measured. This is not a reason for despair. It is a reason to demand better evidence, evidence that accounts for your complexity, not just the population average.
+        </p>
+
+        <!-- CLIFFHANGER SECTION -->
+        <div class="cliffhanger-section">
+            <h2>What Comes Next</h2>
+            <p>
+                I did not write this post just to critique the RCT. I wrote it because I am building something on the other side of that critique. In my doctoral research, I am applying formal causal inference methods to real-world patient data, methods designed to answer exactly the questions that trials cannot.
+            </p>
+            <p class="accent-text">
+                In my next post, I will show you what happens when you take the same clinical question and run it through three different causal architectures. The results do not just differ. They tell fundamentally different stories about who benefits and who does not. And one of those stories changes the clinical calculus entirely.
+            </p>
+            <p>
+                If you found this argument compelling, or if you violently disagree, I want to hear from you. The best science happens at the intersection of disagreement and rigor.
+            </p>
+            <div class="cta-row">
+                <a href="index.html" class="cta-btn primary">Follow Causal Threads</a>
+                <a href="https://linkedin.com" class="cta-btn secondary" target="_blank">Discuss on LinkedIn</a>
+            </div>
+        </div>
+
+        <!-- AUTHOR BIO -->
+        <div class="author-bio">
+            <div class="bio-avatar">H</div>
+            <div class="bio-text">
+                <h4>Dr. Hafsa Benzzi</h4>
+                <p>
+                    Board-certified dermatologist. Veteran of the Phase III dupilumab trials behind Dupixent&rsquo;s FDA approval. PhD candidate in Clinical Research at Icahn School of Medicine at Mount Sinai, studying causal inference for cardiovascular disease prevention. She has practiced medicine across Morocco, France, and the United States.
+                </p>
+            </div>
+        </div>
+
+    </article>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-copy">&copy; 2026 Dr. Hafsa Benzzi &middot; <a href="index.html">Causal Threads</a> &middot; All rights reserved</p>
+    </footer>
+
+    <!-- READING PROGRESS BAR -->
+    <script>
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement;
+            const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+            document.getElementById('progress').style.width = pct + '%';
+        });
+    </script>
+
+</body>
+</html>
