@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Real-World Evidence Needs Causal Inference — Causal Threads</title>
+    <meta name="description" content="Real-world data is transforming drug development and regulatory science. But without causal methods, RWE is just correlation at scale. A white paper by Dr. Hafsa Benzzi.">
+    <meta name="keywords" content="real-world evidence, causal inference, target trial emulation, G-formula, Bayesian networks, pharmacoepidemiology, FDA, RWD, RWE, observational data, confounding, cardiovascular">
+    <meta property="og:title" content="Why Real-World Evidence Needs Causal Inference — Causal Threads">
+    <meta property="og:description" content="Without causal methods, RWE is just correlation at scale. Here's why target trial emulation, G-formula, and Bayesian networks are the missing infrastructure.">
+    <meta property="og:type" content="article">
+    <link rel="canonical" href="https://causal-threads.com/why-real-world-evidence-needs-causal-inference.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a2e;
+            --paper: #faf9f6;
+            --accent: #c0392b;
+            --accent-light: #e74c3c;
+            --muted: #6b7280;
+            --border: #e5e2dc;
+            --card-bg: #ffffff;
+            --nav-bg: rgba(250, 249, 246, 0.92);
+            --warm-white: #f5f3ee;
+            --cream: #ede9e0;
+            --highlight: rgba(192, 57, 43, 0.08);
+            --confound-gold: #d4a853;
+            --collider-teal: #2a9d8f;
+            --mediator-violet: #6c5ce7;
+            --instrument-amber: #e17055;
+            --counterfactual-blue: #4a6fa5;
+            --zellige-white: #f2ece0;
+            --zellige-blue: #5b9bd5;
+            --zellige-teal: #2a7d6f;
+            --zellige-amber: #c87f3b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Source Sans 3', Georgia, serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============ NAV ============ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: box-shadow 0.3s ease;
+        }
+        nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+        .nav-inner {
+            max-width: 1080px; margin: 0 auto; padding: 0 2rem;
+            display: flex; align-items: center; justify-content: space-between; height: 64px;
+        }
+        .nav-brand {
+            font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700;
+            color: var(--ink); text-decoration: none; letter-spacing: -0.03em;
+        }
+        .nav-brand em { color: var(--accent); font-style: italic; }
+        .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+        .nav-links a {
+            font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none;
+            padding: 0.45rem 0.75rem; border-radius: 6px; transition: all 0.2s;
+            letter-spacing: 0.02em; text-transform: uppercase;
+        }
+        .nav-links a:hover { color: var(--ink); background: var(--highlight); }
+        .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+        .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--ink); margin: 5px 0; border-radius: 1px; }
+
+        /* ============ ZELLIGE ============ */
+        .zellige-strip { width: 100%; line-height: 0; pointer-events: none; overflow: hidden; }
+        .zellige-strip svg { width: 100%; display: block; }
+        .zellige-nav-strip { position: fixed; top: 64px; left: 0; right: 0; z-index: 999; height: 28px; }
+        .zellige-nav-strip svg { height: 28px; }
+
+        /* ============ ARTICLE HEADER ============ */
+        .article-header {
+            padding: 8rem 2rem 3rem;
+            max-width: 780px;
+            margin: 0 auto;
+            animation: fadeUp 0.7s ease both;
+        }
+        .article-meta {
+            display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .article-tag {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+            padding: 0.2rem 0.6rem; border-radius: 4px;
+        }
+        .article-tag.white-paper { background: var(--highlight); color: var(--accent); }
+        .article-tag.causal { background: rgba(42,157,143,0.1); color: var(--collider-teal); }
+        .article-tag.cardio { background: rgba(74,111,165,0.1); color: var(--counterfactual-blue); }
+        .article-date {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted);
+        }
+        .article-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3rem);
+            font-weight: 700; line-height: 1.15; letter-spacing: -0.02em;
+            margin-bottom: 1.25rem;
+        }
+        .article-header h1 em { color: var(--accent); font-style: italic; }
+        .article-subtitle {
+            font-size: 1.15rem; color: var(--muted); font-weight: 300; line-height: 1.65;
+            max-width: 640px;
+        }
+        .author-block {
+            display: flex; align-items: center; gap: 0.75rem; margin-top: 2rem;
+            padding-top: 1.5rem; border-top: 1px solid var(--border);
+        }
+        .author-avatar {
+            width: 40px; height: 40px; border-radius: 50%; background: var(--accent);
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem;
+        }
+        .author-info { font-size: 0.9rem; color: var(--muted); line-height: 1.4; }
+        .author-info strong { color: var(--ink); }
+
+        /* ============ ARTICLE BODY ============ */
+        .article-body {
+            max-width: 780px; margin: 0 auto; padding: 0 2rem 4rem;
+        }
+        .article-body h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.65rem; font-weight: 600; line-height: 1.25;
+            margin: 2.5rem 0 1rem; letter-spacing: -0.01em;
+            padding-top: 1.5rem; border-top: 1px solid var(--border);
+        }
+        .article-body h2:first-of-type { border-top: none; padding-top: 0; }
+        .article-body h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem; font-weight: 600; margin: 2rem 0 0.75rem;
+        }
+        .article-body p {
+            margin-bottom: 1.25rem; line-height: 1.8; color: #2d2d44;
+        }
+        .article-body strong { color: var(--ink); }
+
+        /* Pull quote */
+        .pull-quote {
+            margin: 2.5rem 0;
+            padding: 2rem 2.5rem;
+            background: var(--cream);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 10px 10px 0;
+            position: relative;
+        }
+        .pull-quote p {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; font-weight: 400; font-style: italic;
+            line-height: 1.5; color: var(--ink); margin-bottom: 0;
+        }
+        .pull-quote .attribution {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem; font-style: normal; color: var(--muted);
+            margin-top: 0.75rem; letter-spacing: 0.04em;
+        }
+
+        /* Stat callout */
+        .stat-callout {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem; margin: 2rem 0;
+        }
+        .stat-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 10px; padding: 1.25rem; text-align: center;
+        }
+        .stat-card .number {
+            font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700;
+            color: var(--accent); line-height: 1;
+        }
+        .stat-card .label {
+            font-size: 0.82rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.4;
+        }
+
+        /* Code/method block */
+        .method-block {
+            background: var(--ink); color: #e0e0e0; border-radius: 10px;
+            padding: 1.5rem 2rem; margin: 2rem 0; overflow-x: auto;
+        }
+        .method-block .method-title {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 1rem;
+        }
+        .method-block code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+            line-height: 1.8; display: block; white-space: pre-wrap;
+        }
+        .method-block .comment { color: #6a6a8a; }
+        .method-block .keyword { color: var(--collider-teal); }
+        .method-block .value { color: var(--confound-gold); }
+
+        /* Comparison table */
+        .comparison-table {
+            width: 100%; border-collapse: collapse; margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+        .comparison-table th {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+            letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+            padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--border);
+            background: var(--warm-white);
+        }
+        .comparison-table td {
+            padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+            vertical-align: top; line-height: 1.5;
+        }
+        .comparison-table tr:last-child td { border-bottom: none; }
+        .comparison-table .method-name { font-weight: 600; color: var(--ink); }
+
+        /* DAG diagram */
+        .dag-container {
+            background: var(--ink); border-radius: 14px;
+            padding: 2.5rem; margin: 2.5rem 0; text-align: center;
+        }
+        .dag-container svg { max-width: 100%; }
+        .dag-caption {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+            color: rgba(255,255,255,0.4); margin-top: 1rem;
+            letter-spacing: 0.06em; text-transform: uppercase;
+        }
+
+        /* Info box */
+        .info-box {
+            background: rgba(74,111,165,0.06); border: 1px solid rgba(74,111,165,0.15);
+            border-radius: 10px; padding: 1.5rem 2rem; margin: 2rem 0;
+        }
+        .info-box.warning {
+            background: rgba(212,168,83,0.08); border-color: rgba(212,168,83,0.2);
+        }
+        .info-box .box-title {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--counterfactual-blue); margin-bottom: 0.5rem; font-weight: 500;
+        }
+        .info-box.warning .box-title { color: var(--confound-gold); }
+        .info-box p { margin-bottom: 0; font-size: 0.95rem; }
+
+        /* References */
+        .references {
+            margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);
+        }
+        .references h2 { border-top: none; padding-top: 0; margin-top: 0; }
+        .ref-list { list-style: none; counter-reset: ref; }
+        .ref-list li {
+            counter-increment: ref; padding-left: 2.5rem; position: relative;
+            font-size: 0.88rem; color: var(--muted); margin-bottom: 0.75rem; line-height: 1.55;
+        }
+        .ref-list li::before {
+            content: counter(ref) ".";
+            position: absolute; left: 0; font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem; color: var(--accent); font-weight: 500;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.85rem; font-weight: 500; color: var(--accent);
+            text-decoration: none; transition: gap 0.2s;
+        }
+        .back-link:hover { gap: 0.6rem; }
+
+        /* Footer */
+        .article-footer {
+            max-width: 780px; margin: 0 auto; padding: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 1rem;
+        }
+        .article-footer .copyright { font-size: 0.82rem; color: var(--muted); }
+        .article-footer .social-links { display: flex; gap: 1.25rem; }
+        .article-footer .social-links a {
+            font-size: 0.82rem; color: var(--muted); text-decoration: none;
+            font-weight: 500; transition: color 0.2s;
+        }
+        .article-footer .social-links a:hover { color: var(--accent); }
+
+        /* Zellige footer strip */
+        .zellige-footer-strip { height: 52px; }
+        .zellige-footer-strip svg { height: 52px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links {
+                display: none; position: absolute; top: 64px; left: 0; right: 0;
+                background: var(--nav-bg); backdrop-filter: blur(12px);
+                flex-direction: column; padding: 1rem; border-bottom: 1px solid var(--border);
+            }
+            .nav-links.open { display: flex; }
+            .article-header { padding: 6.5rem 1.5rem 2rem; }
+            .article-header h1 { font-size: 1.9rem; }
+            .article-body { padding: 0 1.5rem 3rem; }
+            .pull-quote { padding: 1.5rem; }
+            .pull-quote p { font-size: 1.1rem; }
+            .dag-container { padding: 1.5rem; }
+            .method-block { padding: 1.25rem; }
+            .stat-callout { grid-template-columns: 1fr 1fr; }
+            .zellige-nav-strip { height: 20px; }
+            .zellige-nav-strip svg { height: 20px; }
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .article-body h2 { animation: fadeUp 0.5s ease both; }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-brand">Causal <em>Threads</em></a>
+        <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+            <a href="index.html#posts">All Posts</a>
+            <a href="index.html#posts" data-section="white-papers">White Papers</a>
+            <a href="index.html#about">About</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ZELLIGE TOP STRIP -->
+<div class="zellige-strip zellige-nav-strip">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 28" preserveAspectRatio="xMidYMid slice">
+        <defs>
+            <pattern id="zt" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+                <rect width="28" height="28" fill="#f2ece0"/>
+                <rect x="7" y="7" width="14" height="14" fill="none" stroke="#1c1c1c" stroke-width="0.5" opacity="0.45"/>
+                <rect x="7" y="7" width="14" height="14" transform="rotate(45 14 14)" fill="none" stroke="#1c1c1c" stroke-width="0.5" opacity="0.45"/>
+                <polygon points="14,4 16,9 14,10.5 12,9" fill="#5b9bd5" opacity="0.65"/>
+                <polygon points="20,7 18.5,11 17,9.5 18,8" fill="#c87f3b" opacity="0.6"/>
+                <polygon points="24,14 19,12 18.5,14 19,16" fill="#2a7d6f" opacity="0.65"/>
+                <polygon points="20,21 18.5,17 17,18.5 18,20" fill="#c0392b" opacity="0.55"/>
+                <polygon points="14,24 12,19 14,17.5 16,19" fill="#5b9bd5" opacity="0.6"/>
+                <polygon points="8,21 9.5,17 11,18.5 10,20" fill="#d4a853" opacity="0.55"/>
+                <polygon points="4,14 9,16 9.5,14 9,12" fill="#c87f3b" opacity="0.6"/>
+                <polygon points="8,7 9.5,11 11,9.5 10,8" fill="#2a7d6f" opacity="0.55"/>
+                <circle cx="14" cy="14" r="2.5" fill="none" stroke="#1c1c1c" stroke-width="0.4" opacity="0.35"/>
+                <circle cx="14" cy="14" r="1" fill="#c0392b" opacity="0.6"/>
+                <polygon points="0,0 3,0 0,3" fill="#d4a853" opacity="0.3"/>
+                <polygon points="28,0 25,0 28,3" fill="#5b9bd5" opacity="0.3"/>
+                <polygon points="0,28 3,28 0,25" fill="#2a7d6f" opacity="0.3"/>
+                <polygon points="28,28 25,28 28,25" fill="#c87f3b" opacity="0.3"/>
+            </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#zt)"/>
+        <line x1="0" y1="0.5" x2="840" y2="0.5" stroke="#1c1c1c" stroke-width="0.5" opacity="0.15"/>
+        <line x1="0" y1="27.5" x2="840" y2="27.5" stroke="#1c1c1c" stroke-width="0.5" opacity="0.15"/>
+    </svg>
+</div>
+
+<!-- ARTICLE HEADER -->
+<header class="article-header">
+    <a href="index.html" class="back-link">&larr; Back to all posts</a>
+
+    <div class="article-meta" style="margin-top: 2rem;">
+        <span class="article-date">Feb 2026</span>
+        <span class="article-tag white-paper">White Paper</span>
+        <span class="article-tag causal">Causal Inference</span>
+        <span class="article-tag cardio">Methodology</span>
+    </div>
+
+    <h1>Why Real-World Evidence Needs <em>Causal Inference</em></h1>
+
+    <p class="article-subtitle">Real-world data is transforming drug development and regulatory science. But without causal methods, RWE is just correlation at scale. Here's why target trial emulation, the G-formula, and Bayesian networks are the missing infrastructure&mdash;and what happens when we build without them.</p>
+
+    <div class="author-block">
+        <div class="author-avatar">H</div>
+        <div class="author-info">
+            <strong>Dr. Hafsa Benzzi</strong><br>
+            Dermatologist &middot; PhD Candidate, Mount Sinai &middot; Causal Inference Researcher
+        </div>
+    </div>
+</header>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+
+    <h2>The Promise&mdash;and the Problem</h2>
+
+    <p>The last decade has witnessed an extraordinary shift in how we generate medical evidence. Real-world data (RWD)&mdash;drawn from electronic health records, insurance claims, patient registries, and platforms like the <strong>All of Us Research Program</strong>&mdash;now covers hundreds of millions of patients, far exceeding the reach of any randomized controlled trial.</p>
+
+    <p>Regulatory agencies have taken notice. The FDA's <strong>Real-World Evidence Program</strong>, formalized under the 21st Century Cures Act, explicitly endorses using RWE for regulatory decisions. The European Medicines Agency has followed with its own framework. The question is no longer <em>whether</em> we will use real-world data&mdash;it's whether we will use it correctly.</p>
+
+    <div class="stat-callout">
+        <div class="stat-card">
+            <div class="number">372M+</div>
+            <div class="label">Patient records in major RWD databases worldwide</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">70&ndash;80%</div>
+            <div class="label">of real patients excluded from typical Phase III RCTs</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">$100&ndash;300M</div>
+            <div class="label">Average cost of a single Phase III trial</div>
+        </div>
+    </div>
+
+    <p>The problem is deceptively simple: <strong>observational data cannot, by default, answer causal questions.</strong> Patients who receive a drug differ systematically from those who don't. Doctors prescribe based on severity, comorbidities, and intuition&mdash;all of which confound the treatment-outcome relationship. Without explicit causal methodology, even sophisticated machine learning applied to millions of records will produce associations that look like effects but aren't.</p>
+
+    <div class="pull-quote">
+        <p>&ldquo;The plural of anecdote is not data. And the plural of correlation is not causation&mdash;no matter how large the database.&rdquo;</p>
+        <div class="attribution">&mdash; Adapted from Hernán & Robins, Causal Inference: What If (2020)</div>
+    </div>
+
+    <h2>The Causal Gap in Current RWE Practice</h2>
+
+    <p>Most published RWE studies still rely on regression adjustment or propensity score matching&mdash;methods that handle baseline confounding but fail catastrophically in the presence of <strong>time-varying confounders affected by prior treatment</strong>. In cardiovascular disease prevention, for instance, a patient's LDL cholesterol at month six is both a confounder for future treatment decisions and a mediator of earlier treatment effects. Standard regression cannot disentangle this.</p>
+
+    <div class="info-box warning">
+        <div class="box-title">The Three Invisible Biases</div>
+        <p><strong>Immortal time bias</strong> inflates treatment benefits by misclassifying follow-up time. <strong>Confounding by indication</strong> occurs when sicker patients receive treatment and appear to do worse. <strong>Selection bias</strong> emerges when analyses condition on post-treatment variables. Each is invisible to standard statistical tests&mdash;and each requires causal reasoning to address.</p>
+    </div>
+
+    <p>The consequences are not theoretical. Observational studies using naive methods have repeatedly produced results that contradicted subsequent RCTs&mdash;overstating benefits of hormone replacement therapy for cardiovascular protection, understating risks of COX-2 inhibitors, and generating spurious associations between statins and cancer. These failures weren't caused by bad data. They were caused by the absence of causal structure.</p>
+
+    <h2>The Causal Toolkit for RWE</h2>
+
+    <p>What does it mean to apply causal inference to real-world evidence? It means moving beyond prediction and association to explicitly model the data-generating process&mdash;the mechanisms by which treatments are assigned, confounders evolve, and outcomes occur. Three methodological families form the core of this toolkit:</p>
+
+    <h3>1. Target Trial Emulation</h3>
+
+    <p>Developed by Hernán, Robins, and colleagues, <strong>target trial emulation</strong> asks: what randomized trial would we ideally conduct to answer this question? Then it specifies how to approximate that trial using observational data&mdash;including eligibility criteria, treatment strategies, causal contrasts, and time zero alignment. This framework has been shown to eliminate many common biases in observational research, including immortal time bias and prevalent user bias.</p>
+
+    <div class="method-block">
+        <div class="method-title">Target Trial Protocol &mdash; Polypill vs. Dual Therapy</div>
+        <code><span class="comment"># My dissertation design (All of Us, n = 24,788)</span>
+
+<span class="keyword">Eligibility:</span>    <span class="value">Primary prevention, no prior CVD, age ≥ 40</span>
+<span class="keyword">Treatment A:</span>   <span class="value">Polypill (antihypertensive + statin + aspirin)</span>
+<span class="keyword">Treatment B:</span>   <span class="value">Dual therapy (antihypertensive + statin only)</span>
+<span class="keyword">Time zero:</span>     <span class="value">Date of first qualifying prescription</span>
+<span class="keyword">Outcome:</span>       <span class="value">First MACE event (MI, stroke, CV death)</span>
+<span class="keyword">Follow-up:</span>     <span class="value">5 years, intention-to-treat analogue</span>
+<span class="keyword">Causal contrast:</span> <span class="value">E[Y(polypill)] − E[Y(dual therapy)]</span>
+<span class="keyword">Reference:</span>     <span class="value">Muñoz et al., NEJM 2019</span></code>
+    </div>
+
+    <h3>2. The Parametric G-Formula</h3>
+
+    <p>When confounders change over time and are affected by prior treatment&mdash;as they almost always are in chronic disease&mdash;standard methods produce biased estimates regardless of sample size. The <strong>parametric G-formula</strong> handles this by modeling the joint distribution of time-varying confounders and outcomes under each treatment strategy, then simulating counterfactual outcomes via Monte Carlo methods.</p>
+
+    <p>The G-formula answers a fundamentally different question than regression: not "what is the association between treatment and outcome adjusting for covariates?" but rather "what would happen if we intervened to give everyone treatment A versus treatment B, accounting for how confounders evolve over time?"</p>
+
+    <h3>3. Causal Bayesian Networks</h3>
+
+    <p><strong>Dynamic Bayesian Networks (DBNs)</strong> encode the causal structure of a system as a directed acyclic graph with temporal dynamics. Unlike the G-formula, which requires correct specification of parametric models for every time-varying variable, DBNs learn the conditional dependence structure from data and can represent complex feedback loops between treatment, biomarkers, and outcomes.</p>
+
+    <p>The key advantage is <strong>transparency</strong>: the causal graph itself is an explicit, inspectable hypothesis about the world. When two causal methods produce different estimates on the same data, the discrepancy often reveals misspecification that would have been invisible using either method alone.</p>
+
+    <!-- DAG DIAGRAM -->
+    <div class="dag-container">
+        <svg width="520" height="200" viewBox="0 0 520 200" fill="none">
+            <!-- Edges -->
+            <line x1="80" y1="100" x2="200" y2="60" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+            <line x1="80" y1="100" x2="200" y2="140" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+            <line x1="200" y1="60" x2="350" y2="100" stroke="#c0392b" stroke-width="2" opacity="0.7"/>
+            <line x1="200" y1="140" x2="350" y2="100" stroke="#c0392b" stroke-width="2" opacity="0.7"/>
+            <line x1="350" y1="100" x2="460" y2="100" stroke="rgba(42,157,143,0.6)" stroke-width="2"/>
+            <line x1="80" y1="100" x2="460" y2="100" stroke="rgba(212,168,83,0.3)" stroke-width="1" stroke-dasharray="6 4"/>
+
+            <!-- Nodes -->
+            <circle cx="80" cy="100" r="20" fill="none" stroke="rgba(212,168,83,0.6)" stroke-width="2"/>
+            <text x="80" y="105" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(212,168,83,0.9)">L(t)</text>
+
+            <circle cx="200" cy="60" r="20" fill="none" stroke="rgba(192,57,43,0.7)" stroke-width="2"/>
+            <text x="200" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(192,57,43,0.9)">A(t)</text>
+
+            <circle cx="200" cy="140" r="20" fill="none" stroke="rgba(108,92,231,0.5)" stroke-width="2"/>
+            <text x="200" y="145" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(108,92,231,0.8)">M(t)</text>
+
+            <circle cx="350" cy="100" r="22" fill="none" stroke="rgba(42,157,143,0.6)" stroke-width="2"/>
+            <circle cx="350" cy="100" r="4" fill="#2a9d8f"/>
+            <text x="350" y="105" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(42,157,143,0.9)" dx="30">Y(t+1)</text>
+
+            <circle cx="460" cy="100" r="18" fill="none" stroke="rgba(74,111,165,0.5)" stroke-width="1.5"/>
+            <text x="460" y="105" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(74,111,165,0.8)">Y(cf)</text>
+
+            <!-- Labels -->
+            <text x="80" y="138" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="rgba(255,255,255,0.35)">Confounder</text>
+            <text x="200" y="35" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="rgba(255,255,255,0.35)">Treatment</text>
+            <text x="200" y="175" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="rgba(255,255,255,0.35)">Mediator</text>
+            <text x="350" y="140" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="rgba(255,255,255,0.35)">Outcome</text>
+            <text x="460" y="135" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="rgba(255,255,255,0.35)">Counterfactual</text>
+        </svg>
+        <div class="dag-caption">Simplified DAG &mdash; Time-Varying Confounding with Mediation</div>
+    </div>
+
+    <h2>Why Triangulation Matters</h2>
+
+    <p>No single causal method is assumption-free. The G-formula requires correct parametric specification. Target trial emulation assumes no unmeasured confounding given the measured covariates. Bayesian networks assume faithfulness between the graph and the data distribution. Each method has blind spots.</p>
+
+    <p>The solution is <strong>methodological triangulation</strong>: applying multiple causal approaches to the same data and question, then examining whether they converge or diverge. When they converge, confidence increases. When they diverge, the discrepancy itself becomes informative&mdash;pointing to model misspecification, unmeasured confounding, or violations of positivity.</p>
+
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Handles Time-Varying Confounding</th>
+                <th>Assumption Transparency</th>
+                <th>Data Requirements</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="method-name">Propensity Score Matching</td>
+                <td>Baseline only</td>
+                <td>Low (black-box weights)</td>
+                <td>Moderate</td>
+            </tr>
+            <tr>
+                <td class="method-name">Target Trial Emulation + IPTW</td>
+                <td>Yes (with MSMs)</td>
+                <td>High (explicit protocol)</td>
+                <td>Moderate&ndash;High</td>
+            </tr>
+            <tr>
+                <td class="method-name">Parametric G-Formula</td>
+                <td>Yes (full joint model)</td>
+                <td>Medium (parametric models)</td>
+                <td>High</td>
+            </tr>
+            <tr>
+                <td class="method-name">Clone-Censor-Weight</td>
+                <td>Yes (sustained strategies)</td>
+                <td>High (explicit cloning)</td>
+                <td>High</td>
+            </tr>
+            <tr>
+                <td class="method-name">Dynamic Bayesian Networks</td>
+                <td>Yes (structural learning)</td>
+                <td>Very High (visible graph)</td>
+                <td>Very High</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>The Regulatory Imperative</h2>
+
+    <p>The FDA's March 2024 guidance on non-interventional studies for drug and biological products makes this explicit: regulatory submissions using RWE must articulate a <strong>causal framework</strong>, identify potential confounders, and demonstrate that the study design addresses them. Simply adjusting for baseline covariates no longer suffices.</p>
+
+    <p>This isn't bureaucratic formalism. Regulatory agencies have been burned by observational studies that produced misleading results because they lacked causal rigor. The new standard demands what the Duke-Margolis Center for Health Policy calls a <strong>"Causal Roadmap"</strong>&mdash;a prespecified protocol that mirrors the target trial framework, complete with sensitivity analyses for unmeasured confounding.</p>
+
+    <div class="info-box">
+        <div class="box-title">What the FDA Now Expects</div>
+        <p>A clearly defined causal estimand (not just an "association"). A target trial protocol. Identification and measurement of time-varying confounders. Sensitivity analyses for unmeasured confounding. Transparent reporting of assumptions. This represents a fundamental shift from correlational RWE to causal RWE.</p>
+    </div>
+
+    <h2>From Correlation at Scale to Causation at Scale</h2>
+
+    <p>The opportunity is enormous. Platforms like the All of Us Research Program provide linked genomic, clinical, and survey data on hundreds of thousands of participants&mdash;the kind of granular, longitudinal data that causal methods were designed for. When combined with target trial emulation and methods like the G-formula, this data can answer questions that would take years and hundreds of millions of dollars to address through RCTs.</p>
+
+    <p>My dissertation applies exactly this approach: using the All of Us platform (n&nbsp;=&nbsp;24,788) to emulate a target trial comparing polypill versus dual therapy for primary cardiovascular prevention, with triangulation across the parametric G-formula, Clone-Censor-Weight methodology, and Dynamic Bayesian Networks.</p>
+
+    <p>But the ambition here extends beyond any single study. What's emerging is a new paradigm for evidence generation&mdash;one where causal inference provides the methodological backbone that transforms real-world data from a source of hypotheses into a source of actionable, reliable evidence for clinical and regulatory decisions.</p>
+
+    <div class="pull-quote">
+        <p>&ldquo;The companies and institutions that master causal inference for RWE first will have an enormous competitive advantage&mdash;faster evidence generation, more comprehensive patient coverage, and regulatory differentiation.&rdquo;</p>
+    </div>
+
+    <h2>What Needs to Happen Next</h2>
+
+    <p><strong>For researchers:</strong> Pre-specify your causal estimand and target trial protocol before touching the data. Use DAGs to make your causal assumptions explicit and debatable. Triangulate across methods. Report negative controls and sensitivity analyses.</p>
+
+    <p><strong>For pharma and regulatory science:</strong> Invest in causal inference infrastructure, not just bigger databases. The bottleneck is no longer data volume&mdash;it's methodological rigor. Companies that build internal causal inference capabilities will generate regulatory-grade evidence faster and at lower cost than those relying on traditional approaches.</p>
+
+    <p><strong>For the field:</strong> Make causal reasoning teachable. Most clinical researchers receive extensive training in regression and survival analysis but minimal exposure to DAGs, do-calculus, or the G-formula. Closing this gap is prerequisite to the responsible use of RWE.</p>
+
+    <p>Real-world evidence is not the future of drug development&mdash;it's the present. The question is whether we'll use it with the causal rigor it demands, or whether we'll repeat the mistakes of correlational epidemiology at unprecedented scale.</p>
+
+    <p>The infrastructure exists. The methods are mature. The regulatory path is open. What's missing is the will to build on causal foundations rather than correlational convenience.</p>
+
+    <!-- REFERENCES -->
+    <div class="references">
+        <h2>References</h2>
+        <ol class="ref-list">
+            <li>Hernán MA, Robins JM. <em>Causal Inference: What If.</em> Boca Raton: Chapman & Hall/CRC, 2020.</li>
+            <li>Hernán MA, Robins JM. Using big data to emulate a target trial when a randomized trial is not available. <em>Am J Epidemiol.</em> 2016;183(8):758&ndash;764.</li>
+            <li>Muñoz D, et al. Polypill for cardiovascular disease prevention in an underserved population. <em>N Engl J Med.</em> 2019;381:1114&ndash;1123.</li>
+            <li>Robins JM. A new approach to causal inference in mortality studies with sustained exposure periods. <em>Math Modelling.</em> 1986;7:1393&ndash;1512.</li>
+            <li>Food and Drug Administration. Real-World Evidence: Considerations Regarding Non-Interventional Studies for Drug and Biological Products Guidance for Industry. March 2024.</li>
+            <li>Petersen ML, et al. A causal roadmap for generating high-quality real-world evidence. <em>J Clin Transl Sci.</em> 2023;7(1):e211.</li>
+            <li>Berger ML, et al. Real-world evidence, causal inference, and machine learning. <em>Value Health.</em> 2019;22(5):587&ndash;592.</li>
+            <li>Mariani S, et al. Clone-censor-weight approach for causal inference in sustained treatment strategies. <em>Stat Med.</em> 2022;41(22):4370&ndash;4390.</li>
+            <li>Scutari M, Denis JB. <em>Bayesian Networks with Examples in R.</em> 2nd ed. CRC Press, 2021.</li>
+            <li>All of Us Research Program. <em>The All of Us Research Program.</em> N Engl J Med. 2019;381:668&ndash;676.</li>
+        </ol>
+    </div>
+
+</article>
+
+<!-- ZELLIGE FOOTER STRIP -->
+<div class="zellige-strip zellige-footer-strip">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 52" preserveAspectRatio="xMidYMid slice">
+        <defs>
+            <pattern id="zb" x="0" y="0" width="52" height="52" patternUnits="userSpaceOnUse">
+                <rect width="52" height="52" fill="#f2ece0"/>
+                <rect x="13" y="13" width="26" height="26" fill="none" stroke="#1c1c1c" stroke-width="0.6" opacity="0.35"/>
+                <rect x="13" y="13" width="26" height="26" transform="rotate(45 26 26)" fill="none" stroke="#1c1c1c" stroke-width="0.6" opacity="0.35"/>
+                <polygon points="26,8 30,17 26,19 22,17" fill="#5b9bd5" opacity="0.55"/>
+                <polygon points="38,13 35,20 32,18 34,14" fill="#c87f3b" opacity="0.5"/>
+                <polygon points="44,26 35,22 35,26 35,30" fill="#2a7d6f" opacity="0.55"/>
+                <polygon points="38,39 35,32 32,34 34,38" fill="#c0392b" opacity="0.45"/>
+                <polygon points="26,44 22,35 26,33 30,35" fill="#5b9bd5" opacity="0.5"/>
+                <polygon points="14,39 17,32 20,34 18,38" fill="#d4a853" opacity="0.5"/>
+                <polygon points="8,26 17,30 17,26 17,22" fill="#c87f3b" opacity="0.5"/>
+                <polygon points="14,13 17,20 20,18 18,14" fill="#2a7d6f" opacity="0.5"/>
+                <circle cx="26" cy="26" r="5" fill="none" stroke="#1c1c1c" stroke-width="0.5" opacity="0.25"/>
+                <circle cx="26" cy="26" r="2.5" fill="none" stroke="#c0392b" stroke-width="0.4" opacity="0.35"/>
+                <circle cx="26" cy="26" r="1" fill="#c0392b" opacity="0.5"/>
+                <polygon points="0,0 6,0 3,3 0,6" fill="#5b9bd5" opacity="0.25"/>
+                <polygon points="52,0 46,0 49,3 52,6" fill="#c87f3b" opacity="0.25"/>
+                <polygon points="0,52 6,52 3,49 0,46" fill="#d4a853" opacity="0.25"/>
+                <polygon points="52,52 46,52 49,49 52,46" fill="#2a7d6f" opacity="0.25"/>
+            </pattern>
+        </defs>
+        <line x1="0" y1="0.5" x2="840" y2="0.5" stroke="#1c1c1c" stroke-width="0.5" opacity="0.2"/>
+        <rect y="1" width="100%" height="50" fill="url(#zb)"/>
+        <line x1="0" y1="51.5" x2="840" y2="51.5" stroke="#1c1c1c" stroke-width="0.5" opacity="0.2"/>
+    </svg>
+</div>
+
+<!-- FOOTER -->
+<footer class="article-footer">
+    <span class="copyright">&copy; 2026 Dr. Hafsa Benzzi &middot; Causal Threads</span>
+    <div class="social-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="https://scholar.google.com" target="_blank">Google Scholar</a>
+        <a href="https://github.com/hafsabenzzi2022-creator" target="_blank">GitHub</a>
+        <a href="mailto:hafsa.benzzi@icahn.mssm.edu">Contact</a>
+    </div>
+</footer>
+
+<script>
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => { document.querySelector('.nav-links').classList.remove('open'); });
+    });
+</script>
+
+</body>
+</html>
