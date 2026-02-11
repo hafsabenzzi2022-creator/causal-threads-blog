@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Real-World Evidence Needs Causal Inference | Drug Evaluation</title>
+    <meta name="description" content="Most RWE studies can't answer causal questions. Learn why pharma teams need target trial emulation and the G-formula for credible drug effectiveness evidence.">
+    <meta property="og:title" content="Why Real-World Evidence Needs Causal Inference | Drug Evaluation">
+    <meta property="og:description" content="Most RWE studies can't answer causal questions. Learn why pharma teams need target trial emulation and the G-formula for credible drug effectiveness evidence.">
+    <meta property="og:type" content="article">
+    <meta name="keywords" content="real-world evidence cardiovascular, causal inference drug effectiveness, target trial emulation pharmaceutical, observational study causal inference, G-formula cardiovascular, polypill real-world evidence, RWE regulatory submission, cardiovascular drug comparative effectiveness">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a2e;
+            --paper: #faf8f5;
+            --accent: #c0392b;
+            --accent-soft: #e8d5d0;
+            --muted: #6b7280;
+            --border: #e5e2dd;
+            --highlight: #fef3c7;
+            --code-bg: #f1ede8;
+            --serif: 'Instrument Serif', Georgia, serif;
+            --sans: 'DM Sans', -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 16px 0;
+        }
+
+        .header-inner {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--serif);
+            font-size: 22px;
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        .logo em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .nav {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav a {
+            font-size: 14px;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover { color: var(--accent); }
+
+        /* ===== ARTICLE HEADER ===== */
+        .article-header {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 64px 32px 48px;
+        }
+
+        .article-series {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .article-title {
+            font-family: var(--serif);
+            font-size: 48px;
+            line-height: 1.15;
+            color: var(--ink);
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .article-subtitle {
+            font-size: 20px;
+            color: var(--muted);
+            line-height: 1.6;
+            font-weight: 300;
+            margin-bottom: 32px;
+            max-width: 640px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .author-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .meta-text { display: flex; flex-direction: column; gap: 2px; }
+
+        .meta-name {
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .meta-detail {
+            font-size: 13px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-tags {
+            display: flex;
+            gap: 6px;
+            margin-left: auto;
+        }
+
+        .meta-tag {
+            font-size: 11px;
+            font-family: var(--mono);
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: var(--code-bg);
+            color: var(--muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== ARTICLE BODY ===== */
+        .article-body {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 32px 64px;
+        }
+
+        .article-body p {
+            margin-bottom: 24px;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .article-body h2 {
+            font-family: var(--serif);
+            font-size: 32px;
+            margin-top: 56px;
+            margin-bottom: 24px;
+            color: var(--ink);
+            letter-spacing: -0.3px;
+        }
+
+        .article-body h3 {
+            font-family: var(--serif);
+            font-size: 24px;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: var(--ink);
+        }
+
+        .article-body strong {
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .article-body em {
+            font-style: italic;
+        }
+
+        .article-body a {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .article-body ul, .article-body ol {
+            margin-bottom: 24px;
+            padding-left: 28px;
+        }
+
+        .article-body li {
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        /* ===== PULLQUOTE ===== */
+        .pullquote {
+            font-family: var(--serif);
+            font-size: 26px;
+            font-style: italic;
+            color: var(--accent);
+            border-left: 3px solid var(--accent);
+            padding: 16px 0 16px 28px;
+            margin: 48px 0;
+            line-height: 1.5;
+        }
+
+        /* ===== SECTION DIVIDER ===== */
+        .section-divider {
+            text-align: center;
+            margin: 48px 0;
+            color: var(--border);
+            font-size: 24px;
+            letter-spacing: 12px;
+        }
+
+        /* ===== AUTHOR BIO BOX ===== */
+        .author-bio {
+            background: var(--code-bg);
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 56px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .author-bio-avatar {
+            width: 56px;
+            height: 56px;
+            min-width: 56px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--serif);
+            font-size: 22px;
+        }
+
+        .author-bio-text h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .author-bio-text p {
+            font-size: 14px !important;
+            color: var(--muted) !important;
+            line-height: 1.6 !important;
+            margin-bottom: 0 !important;
+        }
+
+        /* ===== RELATED READING ===== */
+        .related-reading {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .related-reading h3 {
+            font-family: var(--serif);
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .related-reading ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .related-reading li {
+            padding: 8px 0;
+            font-size: 15px;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .related-reading li:last-child { border-bottom: none; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px;
+            text-align: center;
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .footer-copy a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .article-title { font-size: 32px; }
+            .meta-tags { margin-left: 0; margin-top: 8px; }
+            .article-meta { flex-wrap: wrap; }
+            .pullquote { font-size: 22px; }
+            .author-bio { flex-direction: column; }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .article-header > * {
+            animation: fadeIn 0.5s ease-out both;
+        }
+
+        .article-header > :nth-child(2) { animation-delay: 0.08s; }
+        .article-header > :nth-child(3) { animation-delay: 0.14s; }
+        .article-header > :nth-child(4) { animation-delay: 0.2s; }
+
+        /* ===== READING PROGRESS ===== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 200;
+            transition: width 0.1s;
+            width: 0%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progress"></div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">Causal <em>Threads</em></a>
+            <nav class="nav">
+                <a href="index.html">All Posts</a>
+                <a href="white-papers.html">White Papers</a>
+                <a href="https://linkedin.com/in/hafsa-benzzi-md-ba257aa8/" target="_blank">LinkedIn</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ARTICLE HEADER -->
+    <div class="article-header">
+        <div class="article-series">Post No. 02 &mdash; Real-World Evidence Series</div>
+        <h1 class="article-title">Why Real-World Evidence Needs Causal Inference</h1>
+        <p class="article-subtitle">Most RWE studies can&rsquo;t answer causal questions. Here&rsquo;s what pharma teams need to know about target trial emulation and the methods that make real-world data credible.</p>
+        <div class="article-meta">
+            <div class="author-avatar">H</div>
+            <div class="meta-text">
+                <div class="meta-name">Dr. Hafsa Benzzi</div>
+                <div class="meta-detail">
+                    <span>February 10, 2026</span>
+                    <span>&middot;</span>
+                    <span>12 min read</span>
+                </div>
+            </div>
+            <div class="meta-tags">
+                <span class="meta-tag">RWE</span>
+                <span class="meta-tag">Causal Inference</span>
+                <span class="meta-tag">Cardiovascular</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ARTICLE BODY -->
+    <div class="article-body">
+
+        <p>Real-world evidence is reshaping how pharmaceutical companies develop drugs, how regulators evaluate them, and how clinicians prescribe them. In December 2025, the FDA finalized updated guidance allowing de-identified real-world data to support regulatory submissions &mdash; a policy shift that opens the door for large registries and claims databases to influence drug approvals without requiring identifiable patient-level records. The message is clear: real-world evidence is no longer a supplement to randomized controlled trials. It is becoming a pillar of the evidence ecosystem.</p>
+
+        <p>But here&rsquo;s the problem that keeps coming up in boardrooms, regulatory submissions, and medical affairs strategy meetings: <strong>most real-world evidence studies are still designed in ways that cannot credibly answer causal questions.</strong> And in cardiovascular medicine &mdash; where the stakes of getting it wrong are measured in heart attacks and strokes &mdash; the gap between &ldquo;association&rdquo; and &ldquo;cause&rdquo; is not an academic distinction. It is the difference between a label expansion and a retracted claim.</p>
+
+        <p>This post explores why causal inference methods are essential for generating real-world evidence that regulators, payers, and clinicians will trust, with cardiovascular drug evaluation as the proving ground.</p>
+
+        <div class="section-divider">&bull; &bull; &bull;</div>
+
+        <h2>The RWE Boom in Cardiovascular Medicine</h2>
+
+        <p>Cardiovascular disease remains the leading cause of death worldwide, accounting for roughly 18 million deaths annually. The sheer volume of cardiovascular patients in healthcare systems means that electronic health records, claims databases, and registries contain rich longitudinal data on drug exposures, comorbidities, and outcomes &mdash; exactly the kind of data that real-world evidence promises to harness.</p>
+
+        <p>Recent high-profile RWE studies illustrate both the potential and the pitfalls.</p>
+
+        <p><strong>The Wegovy SCORE study</strong>, presented at the American College of Cardiology 2025, analyzed data from over 27,000 patients and found that semaglutide 2.4 mg was associated with a 57% lower risk of a composite endpoint of heart attack, stroke, or all-cause death compared to non-users. Impressive numbers &mdash; but as Novo Nordisk&rsquo;s own chief medical office acknowledged, &ldquo;real-world data analyses have several limitations; results may reflect residual unmeasured confounding; while associations can be demonstrated, causal relationships cannot be definitively established.&rdquo;</p>
+
+        <p><strong>The REPATHA-CE study</strong>, the largest real-world comparative effectiveness evaluation of evolocumab to date (over 110,000 patients with ASCVD), found a 20% lower risk of major adverse cardiovascular events at four years. The study was conducted using Target RWE&rsquo;s causalStudio platform &mdash; notably, a platform built specifically around causal inference methodology.</p>
+
+        <div class="pullquote">These studies share a common thread: they are most credible when they explicitly address the causal question, not just the associational pattern.</div>
+
+        <div class="section-divider">&bull; &bull; &bull;</div>
+
+        <h2>Why Standard Observational Analyses Fall Short</h2>
+
+        <p>The traditional approach to analyzing real-world data in pharmacoepidemiology relies heavily on regression adjustment, propensity score matching, or inverse probability weighting. These methods handle measured confounding, and they do it reasonably well for simple, time-fixed exposures.</p>
+
+        <p>But cardiovascular prevention is rarely simple or time-fixed.</p>
+
+        <p>Consider the question my own dissertation addresses: does a polypill strategy reduce cardiovascular events compared to dual therapy in primary prevention? In the real world, patients start medications at different times, switch therapies, discontinue treatment, and experience events that change their subsequent treatment trajectory. Standard regression cannot handle this. It suffers from what epidemiologists call <strong>time-varying confounding affected by prior treatment</strong> &mdash; the situation where a patient&rsquo;s current health status simultaneously predicts their future treatment decisions and their future outcomes, while also being shaped by their past treatment.</p>
+
+        <p>This is not a niche concern. It applies to virtually every cardiovascular drug effectiveness question involving sustained or dynamic treatment strategies: statin intensification, anticoagulation duration, SGLT2 inhibitor initiation timing, GLP-1 receptor agonist continuation, and yes, polypill adoption.</p>
+
+        <p>When you ignore time-varying confounding, you get biased effect estimates. And biased effect estimates, dressed up in a large sample size, can be more misleading than a small but well-designed study.</p>
+
+        <div class="section-divider">&bull; &bull; &bull;</div>
+
+        <h2>Enter Target Trial Emulation</h2>
+
+        <p>The target trial emulation framework, developed by Miguel Hern&aacute;n and colleagues at Harvard&rsquo;s CAUSALab, offers a principled solution. The idea is deceptively simple: before touching any data, explicitly specify the protocol of the randomized trial you wish you could run. Then, use observational data to emulate that trial as closely as possible.</p>
+
+        <p>This means defining: who is eligible (and when), what the treatment strategies are, how assignment works, what the follow-up period looks like, what the outcome is, how the causal contrast is estimated, and what the analysis plan is.</p>
+
+        <p>The target trial framework matters for pharma for three reasons.</p>
+
+        <p><strong>First, it prevents common design mistakes.</strong> Immortal time bias &mdash; where the treatment group appears to do better simply because patients had to survive long enough to receive treatment &mdash; has plagued observational studies of cardiovascular drugs. The target trial framework eliminates this by aligning time zero across treated and untreated groups at the moment of eligibility, not at the moment of treatment initiation.</p>
+
+        <p><strong>Second, it speaks the language regulators understand.</strong> The FDA&rsquo;s Sentinel Innovation Center has incorporated the target trial framework into its PRINCIPLED approach for causal inference from observational data. NICE in England, the European HTA, and the Canadian Drug Agency have all adopted it as a best practice in their guidelines. JAMA published the TARGET reporting statement in September 2025, establishing consensus-based standards for reporting target trial emulation studies. If you are generating RWE for a regulatory or HTA submission, designing your study as a target trial emulation is increasingly becoming a prerequisite, not a bonus.</p>
+
+        <p><strong>Third, it forces transparency about assumptions.</strong> Every observational causal analysis requires assumptions &mdash; no unmeasured confounding, consistency, positivity. The target trial framework makes these assumptions explicit by mapping them to the trial protocol components. This transparency is what reviewers, regulators, and medical affairs teams need to assess the credibility of the evidence.</p>
+
+        <div class="section-divider">&bull; &bull; &bull;</div>
+
+        <h2>Beyond Target Trial Emulation: The Causal Methods Toolkit</h2>
+
+        <p>Target trial emulation provides the design framework, but the analysis often requires methods that go beyond standard approaches. In cardiovascular research, three families of causal inference methods are proving particularly valuable for pharmaceutical evidence generation.</p>
+
+        <h3>The Parametric G-Formula</h3>
+
+        <p>The G-formula (also called G-computation or the parametric G-formula) estimates what would have happened under different treatment strategies by modeling the joint distribution of time-varying confounders and outcomes over time. It can handle complex, sustained treatment strategies &mdash; exactly the kind of questions that matter for chronic cardiovascular therapies.</p>
+
+        <p>For example, rather than simply comparing &ldquo;patients who took statins&rdquo; versus &ldquo;patients who did not,&rdquo; the G-formula lets you compare well-defined strategies like &ldquo;initiate high-intensity statin at diagnosis and continue unless a contraindication develops&rdquo; versus &ldquo;initiate moderate-intensity statin and escalate only if LDL remains above target.&rdquo; These are the kinds of clinically meaningful comparisons that inform treatment guidelines and label discussions.</p>
+
+        <h3>Marginal Structural Models</h3>
+
+        <p>Marginal structural models use inverse probability of treatment weighting to create a pseudo-population where treatment is unconfounded by time-varying factors. They have been widely used in cardiovascular research to evaluate the effects of treatment discontinuation, dose changes, and dynamic regimens. Their strength is that they avoid the modeling assumptions of the G-formula while still handling time-varying confounding.</p>
+
+        <h3>Clone-Censor-Weight Methods</h3>
+
+        <p>The clone-censor-weight approach is a newer method that handles grace periods &mdash; the clinically realistic delay between when a patient becomes eligible for treatment and when they actually start it. In cardiovascular prevention, this matters enormously. Patients rarely start a polypill or PCSK9 inhibitor on the exact day they become eligible. Clone-censor-weight methods account for this without introducing the immortal time bias that standard approaches would.</p>
+
+        <div class="section-divider">&bull; &bull; &bull;</div>
+
+        <h2>What This Means for Pharma Teams</h2>
+
+        <p>If you work in Medical Affairs, Clinical Development, or Health Economics and Outcomes Research, the convergence of expanded real-world data access and rigorous causal inference methods creates both an opportunity and an obligation.</p>
+
+        <p><strong>The opportunity</strong> is to generate evidence that fills gaps no randomized trial can practically address &mdash; comparative effectiveness across treatment strategies that were never directly tested, effectiveness in populations underrepresented in trials, and long-term outcomes beyond what trial follow-up periods capture. The REPATHA-CE study&rsquo;s four-year follow-up in 110,000 patients is a powerful example of what real-world evidence can provide when the methods are sound.</p>
+
+        <p><strong>The obligation</strong> is to ensure that the methods match the ambition. As the FDA, EMA, and HTA bodies become more sophisticated in evaluating RWE submissions, studies that rely on naive observational comparisons will face increasing scrutiny. The bar is rising, and teams that invest in causal inference expertise &mdash; whether internally or through partnerships &mdash; will be positioned to meet it.</p>
+
+        <p>For cardiovascular drug development specifically, the landscape is particularly ripe. The polypill&rsquo;s recent inclusion on the WHO Model List of Essential Medicines, the emergence of GLP-1 receptor agonists as cardiovascular therapies, the expansion of PCSK9 inhibitor indications, and the ongoing debate about optimal combination strategies all demand the kind of evidence that only well-designed, causally rigorous real-world studies can provide.</p>
+
+        <div class="section-divider">&bull; &bull; &bull;</div>
+
+        <h2>The Bottom Line</h2>
+
+        <p>Real-world evidence is not just about having more data. It is about asking better causal questions and using methods that can credibly answer them. The cardiovascular field &mdash; with its rich data infrastructure, complex treatment dynamics, and high-stakes outcomes &mdash; is where these methods are being tested and refined.</p>
+
+        <p>For pharmaceutical teams navigating this landscape, the takeaway is straightforward: the target trial emulation framework should be your starting point for any RWE study designed to inform causal claims. The choice of causal inference method &mdash; G-formula, marginal structural models, clone-censor-weight, or others &mdash; should follow from the clinical question and the data structure. And the reporting should follow the TARGET statement to meet the emerging standard that regulators and HTA bodies expect.</p>
+
+        <div class="pullquote">The companies that get this right will not just generate better evidence. They will generate evidence that changes practice.</div>
+
+        <!-- AUTHOR BIO -->
+        <div class="author-bio">
+            <div class="author-bio-avatar">H</div>
+            <div class="author-bio-text">
+                <h4>Dr. Hafsa Benzzi</h4>
+                <p>Board-certified dermatologist and PhD candidate in Clinical Research at the Icahn School of Medicine at Mount Sinai, where her dissertation applies causal inference methods &mdash; including the parametric G-formula, dynamic Bayesian networks, and clone-censor-weight methodology &mdash; to evaluate cardiovascular prevention strategies using the NIH&rsquo;s All of Us Research Platform. Veteran of the Phase III dupilumab trials that contributed to Dupixent&rsquo;s FDA approval, with over a decade of clinical experience across Morocco, France, and the United States.</p>
+            </div>
+        </div>
+
+        <!-- RELATED READING -->
+        <div class="related-reading">
+            <h3>Related Reading</h3>
+            <ul>
+                <li>Hern&aacute;n MA et al. &ldquo;The target trial framework for causal inference from observational data.&rdquo; <em>Annals of Internal Medicine</em>, 2025.</li>
+                <li>The TARGET Statement. &ldquo;Transparent Reporting of Observational Studies Emulating a Target Trial.&rdquo; <em>JAMA</em>, September 2025.</li>
+                <li>FDA Final Guidance: &ldquo;Use of Real-World Evidence to Support Regulatory Decision-Making,&rdquo; December 2025.</li>
+                <li>Mu&ntilde;oz D et al. &ldquo;Polypill for Cardiovascular Disease Prevention in an Underserved Population.&rdquo; <em>NEJM</em>, 2019.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-copy">&copy; 2026 <a href="index.html">Causal Threads</a> &mdash; Dr. Hafsa Benzzi</p>
+    </footer>
+
+    <!-- READING PROGRESS BAR -->
+    <script>
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress').style.width = scrolled + '%';
+        });
+    </script>
+
+</body>
+</html>
