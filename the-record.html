@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Record — Dr. Hafsa Benzzi | Causal Threads</title>
+    <meta name="description" content="Complete bibliography of Dr. Hafsa Benzzi — book chapters, manuscripts under review, invited presentations, oral presentations, published abstracts, posters, clinical trial contributions, theses, and awards.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf8f4;
+            --ink: #1c1c1c;
+            --accent: #c0392b;
+            --muted: #6b6b6b;
+            --border: #e5e2dc;
+            --highlight: rgba(192,57,43,0.06);
+            --card-bg: #ffffff;
+            --nav-bg: rgba(250,248,244,0.92);
+            --sky: #5b9bd5;
+            --amber: #c87f3b;
+            --teal: #2a9d8f;
+            --gold: #d4a853;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Source Sans 3', sans-serif; background: var(--bg); color: var(--ink); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; }
+        nav.scrolled { box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+        .nav-inner { max-width: 1080px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: -0.03em; }
+        .nav-brand em { color: var(--accent); font-style: italic; }
+        .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+        .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; padding: 0.45rem 0.75rem; border-radius: 6px; transition: all 0.2s; letter-spacing: 0.02em; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--ink); background: var(--highlight); }
+        .nav-links a.active { color: var(--accent); }
+        .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+        .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--ink); margin: 5px 0; border-radius: 1px; }
+
+        /* ZELLIGE */
+        .zellige-strip { width: 100%; line-height: 0; pointer-events: none; overflow: hidden; }
+        .zellige-strip svg { width: 100%; display: block; }
+        .zellige-nav-strip { position: fixed; top: 64px; left: 0; right: 0; z-index: 999; height: 28px; }
+        .zellige-nav-strip svg { height: 28px; }
+        .zellige-footer-strip { height: 52px; }
+        .zellige-footer-strip svg { height: 52px; }
+
+        /* HERO */
+        .hero { padding: 8rem 2rem 2.5rem; text-align: center; max-width: 720px; margin: 0 auto; animation: fadeUp 0.7s ease both; }
+        .hero .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 1rem; }
+        .hero h1 em { color: var(--accent); font-style: italic; }
+        .hero .subtitle { font-size: 1.1rem; color: var(--muted); font-weight: 300; line-height: 1.65; max-width: 560px; margin: 0 auto; }
+
+        /* WEBSITES */
+        .websites-bar { text-align: center; padding: 1.5rem 2rem 0; margin-bottom: -0.5rem; }
+        .websites-bar a { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.04em; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+        .websites-bar a:hover { color: var(--accent); }
+        .websites-bar .sep { color: var(--border); margin: 0 0.75rem; }
+
+        /* SUMMARY BAR */
+        .summary-bar { max-width: 820px; margin: 0 auto 3rem; padding: 2rem; background: var(--ink); border-radius: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1.25rem; animation: fadeUp 0.6s ease both; }
+        .summary-stat { text-align: center; }
+        .summary-stat .num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.2; }
+        .summary-stat .label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.25rem; }
+
+        /* BIBLIOGRAPHY */
+        .bib-container { max-width: 820px; margin: 0 auto; padding: 0 2rem 4rem; }
+        .bib-section { border-top: 1px solid var(--border); padding: 2.5rem 0 1rem; }
+        .bib-section-header { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .bib-section-letter { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; }
+        .bib-section-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; }
+        .bib-subsection { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin: 1.5rem 0 0.75rem; padding-left: 2rem; }
+        .bib-entry { padding: 0.85rem 0 0.85rem 2rem; position: relative; font-size: 0.95rem; line-height: 1.65; animation: fadeUp 0.4s ease both; }
+        .bib-entry::before { content: attr(data-num); position: absolute; left: 0; top: 0.85rem; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+        .bib-entry + .bib-entry { border-top: 1px solid rgba(229,226,220,0.5); }
+        .bib-entry .author-self { font-weight: 600; }
+        .bib-entry .title { font-style: italic; }
+        .bib-entry .venue { color: var(--muted); }
+        .bib-entry .award { display: inline-block; background: var(--highlight); color: var(--accent); font-weight: 600; font-size: 0.82rem; padding: 0.15rem 0.5rem; border-radius: 4px; margin-left: 0.25rem; }
+        .status { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 500; }
+        .status.under-review { background: rgba(90,155,213,0.12); color: var(--sky); }
+
+        /* FOOTER */
+        footer { max-width: 1080px; margin: 0 auto; padding: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        footer .copyright { font-size: 0.82rem; color: var(--muted); }
+        footer .social-links { display: flex; gap: 1.25rem; }
+        footer .social-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        footer .social-links a:hover { color: var(--accent); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--nav-bg); backdrop-filter: blur(12px); flex-direction: column; padding: 1rem; border-bottom: 1px solid var(--border); gap: 0.25rem; }
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 0.65rem 1rem; width: 100%; }
+            .hero { padding: 7rem 1.5rem 2rem; }
+            .hero h1 { font-size: 2rem; }
+            .bib-container { padding: 0 1.5rem 3rem; }
+            .summary-bar { grid-template-columns: repeat(3, 1fr); margin-left: 1.5rem; margin-right: 1.5rem; }
+            footer { flex-direction: column; text-align: center; }
+            .zellige-nav-strip { height: 20px; }
+            .zellige-nav-strip svg { height: 20px; }
+            .zellige-footer-strip { height: 40px; }
+            .zellige-footer-strip svg { height: 40px; }
+        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<nav id="main-nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-brand">Causal <em>Threads</em></a>
+        <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+            <a href="index.html#posts">All Posts</a>
+            <a href="index.html#posts">Blog</a>
+            <a href="index.html#posts">White Papers</a>
+            <a href="the-record.html" class="active">The Record</a>
+            <a href="about.html">About</a>
+            <a href="brand.html">Brand</a>
+        </div>
+    </div>
+</nav>
+
+<div class="zellige-strip zellige-nav-strip">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 28" preserveAspectRatio="xMidYMid slice">
+        <defs><pattern id="zt" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+            <rect width="28" height="28" fill="#f2ece0"/>
+            <rect x="7" y="7" width="14" height="14" fill="none" stroke="#1c1c1c" stroke-width="0.5" opacity="0.45"/>
+            <rect x="7" y="7" width="14" height="14" transform="rotate(45 14 14)" fill="none" stroke="#1c1c1c" stroke-width="0.5" opacity="0.45"/>
+            <polygon points="14,4 16,9 14,10.5 12,9" fill="#5b9bd5" opacity="0.65"/>
+            <polygon points="20,7 18.5,11 17,9.5 18,8" fill="#c87f3b" opacity="0.6"/>
+            <polygon points="7,14 11,12 10.5,14 11,16" fill="#2a9d8f" opacity="0.55"/>
+            <polygon points="14,18 12,23 14,24.5 16,23" fill="#c0392b" opacity="0.6"/>
+            <polygon points="21,14 17,16 17.5,14 17,12" fill="#d4a853" opacity="0.55"/>
+            <circle cx="14" cy="14" r="1.5" fill="none" stroke="#1c1c1c" stroke-width="0.4" opacity="0.3"/>
+        </pattern></defs>
+        <rect width="840" height="28" fill="url(#zt)"/>
+    </svg>
+</div>
+
+<section class="hero">
+    <div class="section-label">Bibliography</div>
+    <h1>The <em>Record</em></h1>
+    <p class="subtitle">Book chapters, manuscripts, invited presentations, clinical trial contributions, and two decades of scholarly work across three continents.</p>
+</section>
+
+<div class="websites-bar">
+    <a href="https://www.causal-threads.com">www.causal-threads.com</a>
+    <span class="sep">|</span>
+    <a href="https://www.hafsabenzzi.com">www.hafsabenzzi.com</a>
+</div>
+
+<div class="summary-bar">
+    <div class="summary-stat"><div class="num">1</div><div class="label">Book Chapter</div></div>
+    <div class="summary-stat"><div class="num">1</div><div class="label">Under Review</div></div>
+    <div class="summary-stat"><div class="num">15</div><div class="label">Presentations</div></div>
+    <div class="summary-stat"><div class="num">6</div><div class="label">Published Abstracts</div></div>
+    <div class="summary-stat"><div class="num">11+</div><div class="label">Posters</div></div>
+    <div class="summary-stat"><div class="num">1</div><div class="label">Award</div></div>
+</div>
+
+<div class="bib-container">
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">A.</span><span class="bib-section-title">Book Chapters</span></div>
+        <div class="bib-entry" data-num="1."><span class="author-self">Benzzi H.</span> <span class="title">"Placebo in Clinical Trials and the Use of AI."</span> <span class="venue">Book chapter, Vasile Goldis University Press, 2024.</span></div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">B.</span><span class="bib-section-title">Manuscripts Under Peer Review</span></div>
+        <div class="bib-entry" data-num="2."><span class="author-self">Benzzi H,</span> Hakiki Y, Boumahdi M. <span class="title">"Explainable AI in Clinical Research: Bridging the Gap Between Prediction and Causation."</span> Perspective. <em>Journal of the American Medical Informatics Association (JAMIA).</em> Manuscript ID: amiajnl-2026-019140. <span class="status under-review">Under Review</span></div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">C.</span><span class="bib-section-title">Invited Presentations</span></div>
+        <div class="bib-entry" data-num="3."><span class="author-self">Benzzi H.</span> <span class="title">"XAI in Clinical Research."</span> <span class="venue">Invited presentation, Fogarty International Center / NIH European-American Collaborative Program, Icahn School of Medicine at Mount Sinai.</span></div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">D.</span><span class="bib-section-title">Oral Presentations &amp; Conference Papers</span></div>
+        <div class="bib-subsection">International</div>
+        <div class="bib-entry" data-num="4.">Aboulmira A, Hrimech H, Lachgar M, <span class="author-self">Benzzi H.</span> <span class="title">"Leveraging Contrastive Learning for Enhanced Skin Disease Classification."</span> <span class="venue">Oral presentation, International Conference on AI in the Age of Digital Transformation (UNet), 2024, pp. 1-6.</span></div>
+        <div class="bib-subsection">National &amp; Regional</div>
+        <div class="bib-entry" data-num="5."><span class="author-self">Benzzi H,</span> Akhdari N, Amal S. <span class="title">"Pyoderma gangrenosum: Profil epidemiologique, clinique et evolutif."</span> <span class="venue">Oral presentation, Groupe de Reflexion des Dermatologues du Sud (GRDVS), March 2009.</span></div>
+        <div class="bib-entry" data-num="6."><span class="author-self">Benzzi H,</span> Akhdari N, Amal S. <span class="title">"Pyoderma gangrenosum: a propos de cinq cas."</span> <span class="venue">Oral presentation, Journees de l'Internat, Marrakech, March 2009.</span></div>
+        <div class="bib-entry" data-num="7."><span class="author-self">Benzzi H,</span> Akhdari N, Amal S. <span class="title">"Conduite a tenir devant une dermohypodermite aigue."</span> <span class="venue">Oral presentation, Journees d'Internat, Marrakech, March 2009.</span></div>
+        <div class="bib-entry" data-num="8."><span class="author-self">Benzzi H,</span> Akhdari N, Amal S, Hazmiri FZ, Belaabidia B. <span class="title">"Les tumeurs des parties molles: experience du service de dermatologie du CHU Med VI de Marrakech."</span> <span class="venue">Oral presentation, Journees de l'Internat, Marrakech, March 2009.</span></div>
+        <div class="bib-entry" data-num="9."><span class="author-self">Benzzi H,</span> Hocar O, Akhdari N, Amal S. <span class="title">"Leishmaniose neonatale: a propos d'un cas."</span> <span class="venue">Oral presentation, XXIIe Congres National de Dermatologie, Casablanca, October 2009.</span></div>
+        <div class="bib-entry" data-num="10."><span class="author-self">Benzzi H,</span> Hocar O, Lassaoui K, Akhdari N, Amal S. <span class="title">"Les alopecies cicatricielles."</span> <span class="venue">Oral presentation, GRDVS, Sidi Ifni, November 2009.</span></div>
+        <div class="bib-entry" data-num="11."><span class="author-self">Benzzi H,</span> Hocar O, Akhdari N, Amal S. <span class="title">"Les ulceres de jambe."</span> <span class="venue">Oral presentation, Formation Medicale Continue, Faculty of Medicine Marrakech, 2010.</span></div>
+        <div class="bib-entry" data-num="12."><span class="author-self">Benzzi H,</span> Hocar O, Akhdari N, Amal S. <span class="title">"Les lymphomes cutanes."</span> <span class="venue">Oral presentation, GRDVS, Ouarzazate, 2010.</span></div>
+        <div class="bib-entry" data-num="13."><span class="author-self">Benzzi H,</span> Hassam B. <span class="title">"Psoriasis et comorbidites."</span> <span class="venue">Oral presentation, Hopital Mohamed V, Rabat, 2013.</span></div>
+        <div class="bib-entry" data-num="14."><span class="author-self">Benzzi H,</span> Bouaddi M, Amarouch H, Jouid K, Aitouhroui M, Hassam B. <span class="title">"Varicocele et malformations lymphatiques: quelle association fortuite!"</span> <span class="venue">Oral presentation, Journees Scientifiques d'Internat de Marrakech (JIM), March 2013.</span></div>
+        <div class="bib-entry" data-num="15."><span class="author-self">Benzzi H,</span> Bouaddi M, Jouid K, Ramli I, Ait Ourhroui M, Hassam B. <span class="title">"Diabete cortico-induit et dermatoses bulleuses auto-immunes."</span> <span class="venue">Oral presentation, 29e Congres de l'ADF, Marrakech, 2013.</span></div>
+        <div class="bib-entry" data-num="16."><span class="author-self">Benzzi H,</span> Aimaeddine S, El Alouani C. <span class="title">"Medecin Marocain: Entre Droit et Devoir."</span> <span class="venue">Oral presentation (social theme), Journees Scientifiques d'Internat, Marrakech, 2008.</span></div>
+        <div class="bib-entry" data-num="17.">Bouaddi M, Bouaddi I, Jouid K, <span class="author-self">Benzzi H,</span> Hajjaj-Hassouni N, Hassam B. <span class="title">"Le statut de la vitamine D chez les patients atteints de pemphigus."</span> <span class="venue">Oral presentation, Journees de Dermatologie de Paris (JDP), December 2013.</span></div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">E.</span><span class="bib-section-title">Published Abstracts</span></div>
+        <div class="bib-subsection">Annales de Dermatologie et de Venereologie &mdash; 29e Congres International de l'ADF, Marrakech, 2013</div>
+        <div class="bib-entry" data-num="18."><span class="author-self">Benzzi H,</span> Bouaddi M, Jouid K, Ramli I, Ait Ourhroui M, Hassam B. <span class="title">"Diabete cortico-induit et dermatoses bulleuses auto-immunes."</span> <span class="venue">Ann Dermatol Venereol. 2013;140(Suppl 1):S22.</span></div>
+        <div class="bib-entry" data-num="19."><span class="author-self">Benzzi H,</span> Bouaddi M, Jouid K, Raffas W, Ramli I, Ait Ourhroui M, Hassam B. <span class="title">"Piqure d'araignee: Encore des surprises!"</span> <span class="venue">Ann Dermatol Venereol. 2013;140(Suppl 1):S141.</span></div>
+        <div class="bib-entry" data-num="20."><span class="author-self">Benzzi H,</span> Bouaddi M, Jouid K, Hassam B. <span class="title">"Ptosis compliquant un zona ophtalmique."</span> <span class="venue">Ann Dermatol Venereol. 2013;140(Suppl 1):S78.</span></div>
+        <div class="bib-entry" data-num="21."><span class="author-self">Benzzi H,</span> Bouaddi M, Jouid K, Ait Ourhroui M, Hassam B. <span class="title">"Sarcoidose nasosinusienne."</span> <span class="venue">Ann Dermatol Venereol. 2013;140(Suppl 1):S50.</span></div>
+        <div class="bib-entry" data-num="22.">Bouaddi M, <span class="author-self">Benzzi H,</span> Jouid K, Benslama I, Hajjaj-Hassouni N, Hassam B, Senouci K. <span class="title">"Papules des mains revelant une maladie generale."</span> <span class="venue">Ann Dermatol Venereol. 2013;140(Suppl 1):S133-S134.</span></div>
+        <div class="bib-entry" data-num="23.">Jouid K, Bouaddi M, <span class="author-self">Benzzi H,</span> El Amrani LF, Senouci K, Hassam B. <span class="title">"Pemphigus vegetant associe a un lupus systemique chez une patiente de 34 ans."</span> <span class="venue">Ann Dermatol Venereol. 2013;140(Suppl 1):S122.</span></div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">F.</span><span class="bib-section-title">Poster Presentations</span></div>
+        <div class="bib-subsection">EADV (European Academy of Dermatology and Venereology)</div>
+        <div class="bib-entry" data-num="24."><span class="author-self">Benzzi H,</span> Hocar O, Akhdari N, Amal S, Hazmiri FZ, Belaabidia B. <span class="title">"Profil epidemiologique des tumeurs cutanees malignes au CHU de Marrakech."</span> <span class="venue">Poster, EADV Congress, Cracow, Poland, October 2009.</span></div>
+        <div class="bib-entry" data-num="25."><span class="author-self">Benzzi H,</span> Hocar O, Lassaoui K, Akhdari N, Amal S. <span class="title">"Melkersson-Rosenthal Syndrome."</span> <span class="venue">Poster, EADV Congress, Istanbul, Turkey, October 2013.</span></div>
+        <div class="bib-entry" data-num="26.">Benhiba H, <span class="author-self">Benzzi H,</span> Ait Ourhroui M, Senouci K, Hassam B. <span class="title">"Psoriasis and diabetes comorbidity."</span> <span class="venue">Poster, EADV Congress, Istanbul, Turkey, October 2013.</span></div>
+        <div class="bib-subsection">Pso 2013 (International Psoriasis Congress)</div>
+        <div class="bib-entry" data-num="27.">Benhiba H, <span class="author-self">Benzzi H,</span> Ait Ourhroui M, Senouci K, Hassam B. <span class="title">"Psoriasis tied to higher risk of diabetes."</span> <span class="venue">Poster, Pso 2013, Palais des Congres, Paris, July 2013.</span></div>
+        <div class="bib-subsection">ADF (Association des Dermatologistes Francophones)</div>
+        <div class="bib-entry" data-num="28."><span class="author-self">Benzzi H,</span> Hocar O, Lassaoui K, Akhdari N, Amal S. <span class="title">"Syndrome de Melkersson Rosenthal: a propos d'un cas."</span> <span class="venue">Poster, Congres de l'ADF, Chamonix, France, February 2011.</span></div>
+        <div class="bib-entry" data-num="29."><span class="author-self">Benzzi H,</span> Hocar O, Akhdari N, Amal S, Hazmiri FZ, Belaabidia B, El Alouani C, Tahri A. <span class="title">"Profil epidemiologique, anatomo-clinique et evolutif des tumeurs cutanees epitheliales et melaniques malignes au CHU Mohamed VI Marrakech (A propos de 180 cas)."</span> <span class="venue">Poster, Congres de l'ADF, Chamonix, France, February 2011.</span></div>
+        <div class="bib-subsection">National &amp; Maghreb Congresses</div>
+        <div class="bib-entry" data-num="30."><span class="author-self">Benzzi H,</span> Hassam B. <span class="title">"Oeil et antipaludeens de synthese."</span> <span class="venue">Poster, Congres de Medecine Interne, Marrakech, September 2012.</span></div>
+        <div class="bib-entry" data-num="31."><span class="author-self">Benzzi H,</span> Yacoubi H, Akhdari N, Amal S, Zahlane M, Essaadouni L. <span class="title">"Maladie de Behcet: analyse clinique et comparaison des criteres diagnostiques."</span> <span class="venue">Poster, XXIIe Congres National de Dermatologie, Casablanca, October 2009.</span></div>
+        <div class="bib-entry" data-num="32.">Ouhajjou J, <span class="author-self">Benzzi H,</span> Akhdari N, Amal S. <span class="title">"Connaissances et attitudes vis-a-vis du soleil: personnel paramedical versus population generale a Marrakech."</span> <span class="award">1er Prix de Communication Affichee</span> <span class="venue">Poster, 17e Congres Maghrebin de Dermatologie, October 2009.</span></div>
+        <div class="bib-entry" data-num="33."><span class="author-self">Benzzi H,</span> Akhdari N, Amal S, Droussi H, Ettalbi A. <span class="title">"Epidemiologie des tumeurs cutanees malignes et techniques chirurgicales de reconstruction."</span> <span class="venue">Poster, XXIIe Congres National de Dermatologie, March 2010.</span></div>
+        <div class="bib-entry" data-num="34."><span class="author-self">Benzzi H,</span> Ouhajjou J, Hocar O, Akhdari N, Amal S. <span class="title">"Les dermatomyosites: experience du service de dermatologie de Marrakech."</span> <span class="venue">Poster, 17e Congres Maghrebin de Dermatologie, March 2010.</span></div>
+        <div class="bib-entry" data-num="35."><span class="author-self">Benzzi H,</span> Hocar O, Akhdari N, Amal S, El Alouani C, Khouchani M, Benhmidoune MA, Tahri A, Sebbani M, Amine M. <span class="title">"Etude des effets cutaneomuqueux de l'administration de la therapie ciblee en cancerologie."</span> <span class="venue">Poster, Interface Franco-Marocaine en Dermatologie / XXIIIe Congres National, Marrakech, October 2010.</span></div>
+        <div class="bib-entry" data-num="36.">Elourradi R, <span class="author-self">Benzzi H,</span> Amal S. <span class="title">"Pyoderma gangrenosum: a propos de 11 cas."</span> <span class="venue">Poster, Congres Maghrebin de Dermatologie, Algiers, October 2012.</span></div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">G.</span><span class="bib-section-title">Articles Submitted to Peer-Reviewed Journals (2013)</span></div>
+        <div class="bib-entry" data-num="37."><span class="author-self">Benzzi H,</span> Bouaddi M, Jouid K, Aitouhroui M, Hassam B, Saidi I, Kettani M. <span class="title">"What do you think of an unusual axillary mass?"</span> <span class="venue">Original article. Submitted July 11, 2013.</span></div>
+        <div class="bib-entry" data-num="38."><span class="author-self">Benzzi H,</span> Bouaddi M, Jouid K, Benhiba H, Aitouhroui M, Hassam B. <span class="title">"Ptosis complicating an ophthalmic herpes zoster: About a case and review of literature."</span> <span class="venue">Original article. Submitted September 15, 2013.</span></div>
+        <div class="bib-entry" data-num="39."><span class="author-self">Benzzi H,</span> Hassam B. <span class="title">"La leishmaniose neonatale."</span> <span class="venue">Image en Dermatologie. Submitted June 20, 2013.</span></div>
+        <div class="bib-entry" data-num="40."><span class="author-self">Benzzi H,</span> Hassam B. <span class="title">"Maladie de Bowen: une localisation inhabituelle!"</span> <span class="venue">Image en Dermatologie. Submitted July 4, 2013.</span></div>
+        <div class="bib-entry" data-num="41."><span class="author-self">Benzzi H,</span> Hassam B. <span class="title">"Le carcinome basocellulaire: quand l'habit ne fait pas le moine!"</span> <span class="venue">Image en Dermatologie. Submitted July 4, 2013.</span></div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">H.</span><span class="bib-section-title">Awards</span></div>
+        <div class="bib-entry" data-num="42."><span class="award">1er Prix de Communication Affichee (First Prize, Poster Presentation)</span> <span class="venue">17e Congres Maghrebin de Dermatologie, October 2009. For: "Connaissances et attitudes vis-a-vis du soleil: personnel paramedical versus population generale a Marrakech."</span></div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">I.</span><span class="bib-section-title">US Clinical Trial Contributions</span></div>
+        <div class="bib-entry" data-num="43.">Veteran of pivotal Phase III clinical trials in atopic dermatitis (dupilumab) under Dr. Emma Guttman-Yassky, Icahn School of Medicine at Mount Sinai, 2016-2018. These multicenter randomized controlled trials contributed to the FDA approval of Dupixent and transformed the standard of care in moderate-to-severe atopic dermatitis.</div>
+        <div class="bib-entry" data-num="44.">Veteran of multiple Phase III clinical trials in psoriasis evaluating next-generation biologic therapies under Dr. Mark Lebwohl, Icahn School of Medicine at Mount Sinai, 2016-2018. Contributed to the clinical development programs of several biologics that subsequently received FDA approval and redefined treatment paradigms in moderate-to-severe plaque psoriasis.</div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">J.</span><span class="bib-section-title">Theses &amp; Dissertations</span></div>
+        <div class="bib-entry" data-num="45."><span class="author-self">Benzzi H.</span> <span class="title">"Profil epidemiologique et anatomoclinique des tumeurs cutanees malignes au CHU Mohamed VI de Marrakech."</span> <span class="venue">MD thesis, Universite Cadi Ayyad, Faculty of Medicine, Marrakech.</span></div>
+        <div class="bib-entry" data-num="46."><span class="author-self">Benzzi H.</span> <span class="title">"Adhesion au traitement des patients atteints de dermatoses bulleuses auto-immunes."</span> <span class="venue">Specialty memoir (Dermatology), Universite Mohammed V-Souissi, Rabat.</span></div>
+        <div class="bib-entry" data-num="47."><span class="author-self">Benzzi H.</span> <span class="title">"Causal Bayesian Networks to Identify Causal Risk Factors in Coronary Artery Disease."</span> <span class="venue">PhD dissertation (in progress), Clinical Research Program, Icahn School of Medicine at Mount Sinai, 2022-2026.</span></div>
+    </section>
+
+    <section class="bib-section">
+        <div class="bib-section-header"><span class="bib-section-letter">K.</span><span class="bib-section-title">Institutional Service &amp; Governance</span></div>
+        <div class="bib-entry" data-num="48."><span class="author-self">Former Member, AI Governance Committee,</span> <span class="venue">Mount Sinai Health System (co-chaired by Dr. Darrow). Institutional oversight of AI deployment, transparency standards, and ethical review of AI-driven clinical decision support systems.</span></div>
+    </section>
+
+</div>
+
+<div class="zellige-strip zellige-footer-strip">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 52" preserveAspectRatio="xMidYMid slice">
+        <defs><pattern id="zf" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+            <rect width="28" height="28" fill="#1c1c1c"/>
+            <rect x="7" y="7" width="14" height="14" fill="none" stroke="#f2ece0" stroke-width="0.5" opacity="0.2"/>
+            <rect x="7" y="7" width="14" height="14" transform="rotate(45 14 14)" fill="none" stroke="#f2ece0" stroke-width="0.5" opacity="0.2"/>
+            <polygon points="14,4 16,9 14,10.5 12,9" fill="#5b9bd5" opacity="0.4"/>
+            <polygon points="20,7 18.5,11 17,9.5 18,8" fill="#c87f3b" opacity="0.35"/>
+            <polygon points="7,14 11,12 10.5,14 11,16" fill="#2a9d8f" opacity="0.3"/>
+            <polygon points="14,18 12,23 14,24.5 16,23" fill="#c0392b" opacity="0.35"/>
+            <polygon points="21,14 17,16 17.5,14 17,12" fill="#d4a853" opacity="0.3"/>
+            <circle cx="14" cy="14" r="1.5" fill="none" stroke="#f2ece0" stroke-width="0.4" opacity="0.2"/>
+        </pattern></defs>
+        <rect width="840" height="52" fill="url(#zf)"/>
+    </svg>
+</div>
+
+<footer>
+    <span class="copyright">&copy; 2026 Dr. Hafsa Benzzi &middot; Causal Threads</span>
+    <div class="social-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="https://scholar.google.com" target="_blank">Google Scholar</a>
+        <a href="https://github.com/hafsabenzzi2022-creator" target="_blank">GitHub</a>
+        <a href="mailto:hafsa.benzzi@icahn.mssm.edu">Contact</a>
+    </div>
+</footer>
+
+<script>
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => { document.querySelector('.nav-links').classList.remove('open'); });
+    });
+</script>
+</body>
+</html>
