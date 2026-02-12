@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Dr. Hafsa Benzzi | Causal Threads</title>
+    <meta name="description" content="The story behind Causal Threads. Dr. Hafsa Benzzi — dermatologist, causal inference researcher, physician-scientist. From Marrakech to Mount Sinai.">
+    <meta property="og:title" content="About — Dr. Hafsa Benzzi | Causal Threads">
+    <meta property="og:description" content="A life told in five acts. From Marrakech to Mount Sinai — the journey of a physician who became a causal thinker.">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="https://causal-threads.com/about.html">
+    <link rel="canonical" href="https://causal-threads.com/about.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a2e;
+            --paper: #faf9f6;
+            --accent: #c0392b;
+            --accent-light: #e74c3c;
+            --muted: #6b7280;
+            --border: #e5e2dc;
+            --card-bg: #ffffff;
+            --nav-bg: rgba(250, 249, 246, 0.92);
+            --highlight: rgba(192, 57, 43, 0.08);
+            --warm-white: #f5f3ee;
+            --cream: #ede9e0;
+            --confound-gold: #d4a853;
+            --collider-teal: #2a9d8f;
+            --mediator-violet: #6c5ce7;
+            --instrument-amber: #e17055;
+            --counterfactual-blue: #4a6fa5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Source Sans 3', Georgia, serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============ NAVIGATION ============ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: box-shadow 0.3s ease;
+        }
+        nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+        .nav-inner {
+            max-width: 1080px; margin: 0 auto; padding: 0 2rem;
+            display: flex; align-items: center; justify-content: space-between; height: 64px;
+        }
+        .nav-brand {
+            font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700;
+            color: var(--ink); text-decoration: none; letter-spacing: -0.02em;
+        }
+        .nav-brand em { color: var(--accent); font-style: italic; }
+        .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+        .nav-links a {
+            font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none;
+            padding: 0.45rem 0.75rem; border-radius: 6px; transition: all 0.2s;
+            letter-spacing: 0.02em; text-transform: uppercase;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--ink); background: var(--highlight); }
+        .nav-links a.active { color: var(--accent); }
+
+        .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+        .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--ink); margin: 4px 0; transition: all 0.3s; }
+
+        /* ============ ZELLIGE STRIPS ============ */
+        .zellige-strip { width: 100%; line-height: 0; pointer-events: none; overflow: hidden; }
+        .zellige-strip svg { width: 100%; display: block; }
+        .zellige-nav { position: fixed; top: 64px; left: 0; right: 0; z-index: 999; height: 6px; }
+        .zellige-nav svg { height: 6px; }
+
+        /* ============ HERO / ILLUSTRATION ============ */
+        .about-hero {
+            margin-top: 70px;
+            background: #0d0d1a;
+            display: flex; align-items: center; justify-content: center;
+            padding: 0;
+            overflow: hidden;
+        }
+        .about-hero svg {
+            width: 100%; max-width: 900px; height: auto; display: block;
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .about-content {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 4rem 2rem 6rem;
+        }
+
+        /* Page title */
+        .about-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--muted);
+            margin-bottom: 3rem;
+        }
+
+        /* Opening epigraph */
+        .epigraph {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--ink);
+            line-height: 1.85;
+            border-left: 3px solid var(--accent);
+            padding-left: 1.5rem;
+            margin-bottom: 3.5rem;
+            opacity: 0.85;
+        }
+
+        /* Act headings */
+        .act-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-top: 3.5rem;
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.02em;
+        }
+
+        .act-heading .act-number {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Separator between acts */
+        .act-separator {
+            width: 48px;
+            height: 1px;
+            background: var(--accent);
+            opacity: 0.3;
+            margin: 3rem 0 0;
+        }
+
+        /* Body paragraphs */
+        .about-content p {
+            font-family: 'Source Sans 3', Georgia, serif;
+            font-size: 1.05rem;
+            color: var(--ink);
+            line-height: 1.85;
+            margin-bottom: 1.4rem;
+            text-align: left;
+        }
+
+        .about-content p em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        /* Closing signature */
+        .signature {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .signature-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 0.3rem;
+        }
+
+        .signature-title {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* Zellige decorative break between acts */
+        .zellige-break {
+            text-align: center;
+            margin: 3rem 0;
+            opacity: 0.12;
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .footer-links a { color: rgba(250,249,246,0.6); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent-light); }
+        .footer-copy { font-size: 0.8rem; color: rgba(250,249,246,0.35); }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--nav-bg); backdrop-filter: blur(12px); flex-direction: column; padding: 1rem; border-bottom: 1px solid var(--border); }
+            .nav-links.open { display: flex; }
+            .nav-toggle { display: block; }
+            .about-title { font-size: 2rem; }
+            .act-heading { font-size: 1.35rem; }
+            .about-content { padding: 3rem 1.25rem 4rem; }
+        }
+
+        /* ============ FADE-IN ANIMATIONS ============ */
+        .fade-in {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<!-- ========== NAVIGATION ========== -->
+<nav id="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-brand">Causal <em>Threads</em></a>
+        <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+            <a href="index.html#posts">Writing</a>
+            <a href="index.html#teasers">Coming Soon</a>
+            <a href="brand.html">Brand</a>
+            <a href="about.html" class="active">About</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ========== ZELLIGE NAV STRIP ========== -->
+<div class="zellige-strip zellige-nav">
+    <svg viewBox="0 0 1200 6" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="zn1" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#c0392b"/>
+                <stop offset="20%" stop-color="#d4a853"/>
+                <stop offset="40%" stop-color="#2a9d8f"/>
+                <stop offset="60%" stop-color="#6c5ce7"/>
+                <stop offset="80%" stop-color="#4a6fa5"/>
+                <stop offset="100%" stop-color="#e17055"/>
+            </linearGradient>
+        </defs>
+        <rect width="1200" height="6" fill="url(#zn1)"/>
+    </svg>
+</div>
+
+<!-- ========== HERO ILLUSTRATION ========== -->
+<div class="about-hero">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <defs>
+    <pattern id="zellige-bg" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect width="40" height="40" fill="none"/>
+      <polygon points="20,4 28,10 28,20 20,26 12,20 12,10" fill="none" stroke="#c0392b" stroke-width="0.3" opacity="0.08"/>
+      <circle cx="20" cy="15" r="1" fill="#c0392b" opacity="0.06"/>
+      <line x1="0" y1="20" x2="12" y2="15" stroke="#1a1a2e" stroke-width="0.2" opacity="0.05"/>
+      <line x1="28" y1="15" x2="40" y2="20" stroke="#1a1a2e" stroke-width="0.2" opacity="0.05"/>
+    </pattern>
+    <radialGradient id="spotlight" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#f5e6d0" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#0d0d1a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="canvas-red" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c0392b"/>
+      <stop offset="50%" stop-color="#a83225"/>
+      <stop offset="100%" stop-color="#8e2a1f"/>
+    </linearGradient>
+    <linearGradient id="wood-dark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2c1810"/>
+      <stop offset="50%" stop-color="#3d2317"/>
+      <stop offset="100%" stop-color="#2c1810"/>
+    </linearGradient>
+    <linearGradient id="camera-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a2a3d"/>
+      <stop offset="40%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#12121f"/>
+    </linearGradient>
+    <radialGradient id="lens-glass" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4a6d8c" stop-opacity="0.6"/>
+      <stop offset="40%" stop-color="#1a1a2e" stop-opacity="0.8"/>
+      <stop offset="80%" stop-color="#0d0d1a"/>
+      <stop offset="90%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#2a2a3d"/>
+    </radialGradient>
+    <radialGradient id="reel-metal" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#5a5a6e"/>
+      <stop offset="60%" stop-color="#3a3a4e"/>
+      <stop offset="100%" stop-color="#2a2a3d"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#0d0d1a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0d0d1a" stop-opacity="0.5"/>
+    </radialGradient>
+    <linearGradient id="gold-accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#b8860b"/>
+      <stop offset="50%" stop-color="#daa520"/>
+      <stop offset="100%" stop-color="#b8860b"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="500" fill="#0d0d1a"/>
+  <rect width="900" height="500" fill="url(#zellige-bg)"/>
+  <rect width="900" height="500" fill="url(#spotlight)"/>
+  <line x1="100" y1="420" x2="800" y2="420" stroke="#c0392b" stroke-width="0.5" opacity="0.15"/>
+  <ellipse cx="450" cy="422" rx="320" ry="8" fill="#c0392b" opacity="0.03"/>
+  <!-- FILM CAMERA -->
+  <g transform="translate(180, 140)">
+    <line x1="75" y1="230" x2="20" y2="280" stroke="#3d2317" stroke-width="5" stroke-linecap="round"/>
+    <line x1="85" y1="230" x2="140" y2="280" stroke="#3d2317" stroke-width="5" stroke-linecap="round"/>
+    <line x1="80" y1="230" x2="80" y2="285" stroke="#3d2317" stroke-width="5" stroke-linecap="round"/>
+    <rect x="60" y="218" width="40" height="16" rx="3" fill="#2a2a3d"/>
+    <rect x="65" y="215" width="30" height="6" rx="2" fill="#3a3a4e"/>
+    <rect x="25" y="130" width="110" height="85" rx="6" fill="url(#camera-body)" stroke="#3a3a4e" stroke-width="1"/>
+    <rect x="35" y="145" width="30" height="40" rx="2" fill="#12121f" stroke="#3a3a4e" stroke-width="0.5"/>
+    <rect x="40" y="150" width="20" height="28" rx="1" fill="#0d0d1a"/>
+    <rect x="75" y="142" width="50" height="12" rx="2" fill="#3a3a4e" opacity="0.5"/>
+    <rect x="75" y="160" width="50" height="8" rx="2" fill="#3a3a4e" opacity="0.3"/>
+    <circle cx="100" cy="190" r="6" fill="#3a3a4e" opacity="0.4"/>
+    <circle cx="100" cy="190" r="3" fill="#2a2a3d"/>
+    <rect x="115" y="140" width="25" height="18" rx="3" fill="#2a2a3d" stroke="#3a3a4e" stroke-width="0.8"/>
+    <rect x="135" y="144" width="12" height="10" rx="2" fill="#1a1a2e"/>
+    <ellipse cx="25" cy="172" rx="8" ry="35" fill="#2a2a3d"/>
+    <rect x="-40" y="148" width="65" height="48" rx="24" fill="#2a2a3d" stroke="#3a3a4e" stroke-width="1"/>
+    <ellipse cx="-38" cy="172" rx="3" ry="28" fill="none" stroke="#4a4a5e" stroke-width="0.8"/>
+    <ellipse cx="-20" cy="172" rx="3" ry="32" fill="none" stroke="#4a4a5e" stroke-width="0.5"/>
+    <circle cx="-42" cy="172" r="26" fill="url(#lens-glass)" stroke="#4a4a5e" stroke-width="1.5"/>
+    <circle cx="-42" cy="172" r="18" fill="none" stroke="#3a3a4e" stroke-width="0.5"/>
+    <circle cx="-42" cy="172" r="10" fill="none" stroke="#3a3a4e" stroke-width="0.3"/>
+    <circle cx="-48" cy="165" r="4" fill="#f5e6d0" opacity="0.08"/>
+    <circle cx="-36" cy="178" r="2" fill="#f5e6d0" opacity="0.05"/>
+    <circle cx="50" cy="130" r="38" fill="url(#reel-metal)" stroke="#4a4a5e" stroke-width="1"/>
+    <circle cx="50" cy="130" r="28" fill="none" stroke="#4a4a5e" stroke-width="0.5"/>
+    <circle cx="50" cy="130" r="12" fill="#1a1a2e" stroke="#4a4a5e" stroke-width="0.8"/>
+    <circle cx="50" cy="130" r="5" fill="#3a3a4e"/>
+    <line x1="50" y1="100" x2="50" y2="118" stroke="#4a4a5e" stroke-width="1.2"/>
+    <line x1="25" y1="115" x2="38" y2="125" stroke="#4a4a5e" stroke-width="1.2"/>
+    <line x1="75" y1="115" x2="62" y2="125" stroke="#4a4a5e" stroke-width="1.2"/>
+    <line x1="25" y1="145" x2="38" y2="135" stroke="#4a4a5e" stroke-width="1.2"/>
+    <line x1="75" y1="145" x2="62" y2="135" stroke="#4a4a5e" stroke-width="1.2"/>
+    <circle cx="110" cy="130" r="30" fill="url(#reel-metal)" stroke="#4a4a5e" stroke-width="1"/>
+    <circle cx="110" cy="130" r="22" fill="none" stroke="#4a4a5e" stroke-width="0.5"/>
+    <circle cx="110" cy="130" r="10" fill="#1a1a2e" stroke="#4a4a5e" stroke-width="0.8"/>
+    <circle cx="110" cy="130" r="4" fill="#3a3a4e"/>
+    <line x1="110" y1="106" x2="110" y2="120" stroke="#4a4a5e" stroke-width="1"/>
+    <line x1="90" y1="118" x2="100" y2="126" stroke="#4a4a5e" stroke-width="1"/>
+    <line x1="130" y1="118" x2="120" y2="126" stroke="#4a4a5e" stroke-width="1"/>
+    <path d="M50,92 Q80,85 110,100" fill="none" stroke="#2a2a3d" stroke-width="3"/>
+  </g>
+  <!-- DIRECTOR'S CHAIR -->
+  <g transform="translate(520, 155)">
+    <line x1="30" y1="40" x2="110" y2="265" stroke="url(#wood-dark)" stroke-width="7" stroke-linecap="round"/>
+    <line x1="130" y1="40" x2="50" y2="265" stroke="url(#wood-dark)" stroke-width="7" stroke-linecap="round"/>
+    <line x1="15" y1="120" x2="40" y2="265" stroke="url(#wood-dark)" stroke-width="7" stroke-linecap="round"/>
+    <line x1="145" y1="120" x2="120" y2="265" stroke="url(#wood-dark)" stroke-width="7" stroke-linecap="round"/>
+    <path d="M18,165 Q80,180 142,165 L138,172 Q80,188 22,172 Z" fill="url(#canvas-red)"/>
+    <path d="M22,172 Q80,188 138,172 L136,176 Q80,192 24,176 Z" fill="#8e2a1f" opacity="0.5"/>
+    <line x1="45" y1="220" x2="115" y2="220" stroke="url(#wood-dark)" stroke-width="5" stroke-linecap="round"/>
+    <rect x="5" y="115" width="40" height="8" rx="3" fill="url(#wood-dark)"/>
+    <rect x="115" y="115" width="40" height="8" rx="3" fill="url(#wood-dark)"/>
+    <path d="M32,38 L128,38 L128,105 L32,105 Z" fill="url(#canvas-red)"/>
+    <path d="M32,38 L128,38 L128,48 Q80,52 32,48 Z" fill="#8e2a1f" opacity="0.3"/>
+    <text x="80" y="68" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#f5e6d0" letter-spacing="3" font-weight="bold">CAUSAL</text>
+    <text x="80" y="86" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#f5e6d0" letter-spacing="3" font-weight="bold">THREADS</text>
+    <rect x="25" y="30" width="110" height="10" rx="4" fill="url(#wood-dark)"/>
+    <path d="M34,40 L50,40 L34,52 Z" fill="url(#gold-accent)" opacity="0.2"/>
+    <path d="M126,40 L110,40 L126,52 Z" fill="url(#gold-accent)" opacity="0.2"/>
+    <path d="M34,103 L50,103 L34,91 Z" fill="url(#gold-accent)" opacity="0.2"/>
+    <path d="M126,103 L110,103 L126,91 Z" fill="url(#gold-accent)" opacity="0.2"/>
+    <ellipse cx="42" cy="267" rx="6" ry="3" fill="#1a1a2e"/>
+    <ellipse cx="118" cy="267" rx="6" ry="3" fill="#1a1a2e"/>
+    <ellipse cx="52" cy="267" rx="6" ry="3" fill="#1a1a2e"/>
+    <ellipse cx="108" cy="267" rx="6" ry="3" fill="#1a1a2e"/>
+  </g>
+  <!-- CLAPPERBOARD -->
+  <g transform="translate(400, 350) rotate(-12)">
+    <rect x="0" y="20" width="80" height="55" rx="3" fill="#1a1a2e" stroke="#3a3a4e" stroke-width="0.8"/>
+    <rect x="0" y="8" width="80" height="16" rx="2" fill="#2a2a3d" stroke="#3a3a4e" stroke-width="0.8"/>
+    <line x1="8" y1="8" x2="16" y2="24" stroke="#f5e6d0" stroke-width="2.5"/>
+    <line x1="22" y1="8" x2="30" y2="24" stroke="#f5e6d0" stroke-width="2.5"/>
+    <line x1="36" y1="8" x2="44" y2="24" stroke="#f5e6d0" stroke-width="2.5"/>
+    <line x1="50" y1="8" x2="58" y2="24" stroke="#f5e6d0" stroke-width="2.5"/>
+    <line x1="64" y1="8" x2="72" y2="24" stroke="#f5e6d0" stroke-width="2.5"/>
+    <text x="10" y="40" font-family="monospace" font-size="6" fill="#f5e6d0" opacity="0.7">SCENE</text>
+    <text x="50" y="40" font-family="monospace" font-size="6" fill="#f5e6d0" opacity="0.7">TAKE</text>
+    <text x="10" y="55" font-family="monospace" font-size="7" fill="#c0392b" opacity="0.9">ACT I</text>
+    <text x="50" y="55" font-family="monospace" font-size="7" fill="#c0392b" opacity="0.9">1</text>
+    <line x1="8" y1="45" x2="72" y2="45" stroke="#3a3a4e" stroke-width="0.4"/>
+    <line x1="8" y1="60" x2="72" y2="60" stroke="#3a3a4e" stroke-width="0.4"/>
+  </g>
+  <!-- FILM STRIP -->
+  <g transform="translate(80, 440)" opacity="0.15">
+    <rect x="0" y="0" width="740" height="28" rx="2" fill="#1a1a2e"/>
+    <rect x="8" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="8" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="38" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="38" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="68" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="68" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="98" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="98" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="18" y="5" width="16" height="18" rx="1" fill="#c0392b" opacity="0.3"/>
+    <rect x="48" y="5" width="16" height="18" rx="1" fill="#daa520" opacity="0.3"/>
+    <rect x="78" y="5" width="16" height="18" rx="1" fill="#2a9d8f" opacity="0.3"/>
+    <rect x="108" y="5" width="16" height="18" rx="1" fill="#7b68ee" opacity="0.3"/>
+    <rect x="138" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="138" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="168" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="168" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="198" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="198" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="228" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="228" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="148" y="5" width="16" height="18" rx="1" fill="#4682b4" opacity="0.3"/>
+    <rect x="178" y="5" width="16" height="18" rx="1" fill="#d4760a" opacity="0.3"/>
+    <rect x="208" y="5" width="16" height="18" rx="1" fill="#c0392b" opacity="0.3"/>
+    <rect x="238" y="5" width="16" height="18" rx="1" fill="#daa520" opacity="0.3"/>
+    <rect x="258" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="258" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="288" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="288" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="318" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="318" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="348" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="348" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="268" y="5" width="16" height="18" rx="1" fill="#2a9d8f" opacity="0.3"/>
+    <rect x="298" y="5" width="16" height="18" rx="1" fill="#7b68ee" opacity="0.3"/>
+    <rect x="328" y="5" width="16" height="18" rx="1" fill="#4682b4" opacity="0.3"/>
+    <rect x="358" y="5" width="16" height="18" rx="1" fill="#d4760a" opacity="0.3"/>
+    <rect x="378" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="378" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="408" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="408" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="438" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="438" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="468" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="468" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="388" y="5" width="16" height="18" rx="1" fill="#c0392b" opacity="0.3"/>
+    <rect x="418" y="5" width="16" height="18" rx="1" fill="#daa520" opacity="0.3"/>
+    <rect x="448" y="5" width="16" height="18" rx="1" fill="#2a9d8f" opacity="0.3"/>
+    <rect x="478" y="5" width="16" height="18" rx="1" fill="#7b68ee" opacity="0.3"/>
+    <rect x="498" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="498" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="528" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="528" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="558" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="558" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="588" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="588" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="508" y="5" width="16" height="18" rx="1" fill="#4682b4" opacity="0.3"/>
+    <rect x="538" y="5" width="16" height="18" rx="1" fill="#d4760a" opacity="0.3"/>
+    <rect x="568" y="5" width="16" height="18" rx="1" fill="#c0392b" opacity="0.3"/>
+    <rect x="598" y="5" width="16" height="18" rx="1" fill="#daa520" opacity="0.3"/>
+    <rect x="618" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="618" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="648" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="648" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="678" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="678" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="708" y="3" width="6" height="4" rx="1" fill="#0d0d1a"/><rect x="708" y="21" width="6" height="4" rx="1" fill="#0d0d1a"/>
+    <rect x="628" y="5" width="16" height="18" rx="1" fill="#2a9d8f" opacity="0.3"/>
+    <rect x="658" y="5" width="16" height="18" rx="1" fill="#7b68ee" opacity="0.3"/>
+    <rect x="688" y="5" width="16" height="18" rx="1" fill="#4682b4" opacity="0.3"/>
+    <rect x="718" y="5" width="16" height="18" rx="1" fill="#d4760a" opacity="0.3"/>
+  </g>
+  <text x="450" y="485" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#f5e6d0" opacity="0.35" font-style="italic" letter-spacing="1.5">A life told in five acts</text>
+  <rect width="900" height="500" fill="url(#vignette)"/>
+</svg>
+</div>
+
+<!-- ========== ABOUT CONTENT ========== -->
+<main class="about-content">
+
+    <h1 class="about-title fade-in">The Thread</h1>
+    <p class="about-subtitle fade-in">Where the pattern began</p>
+
+    <div class="epigraph fade-in">
+        There is a city in Morocco where the geometry of zellige tiles encodes a truth most scientists spend careers trying to articulate: that every pattern is the consequence of something deeper. I was born in Marrakech, and I have spent the years since learning to read those hidden structures &mdash; first in the skin, then in clinical trials, then in the mathematics of causation itself.
+    </div>
+
+    <!-- ACT I -->
+    <div class="act-separator"></div>
+    <h2 class="act-heading fade-in">
+        <span class="act-number">Act I</span>
+        The Physician
+    </h2>
+    <p class="fade-in">I trained in medicine at Cadi Ayyad University in Marrakech, where the consultation room teaches a language no textbook carries &mdash; the language of patients who describe illness through metaphor, through silence, through the architecture of trust. I chose dermatology because skin is the body's most honest narrator: it conceals nothing.</p>
+    <p class="fade-in">I completed my specialty in Dermatology and Venereology at Mohammed V University in Rabat, under the stewardship of Professor Badreddine Hassam &mdash; Chairman of the Department of Dermatology and a figure whose clinical acumen carries the quiet authority of a master who has forgotten more than most will ever learn. He taught me that dermatology is not a visual speciality but an interpretive one: that the lesion is a letter, and the physician's task is to read the sentence it belongs to. I remain, and shall always remain, his student. I then crossed the Mediterranean to study Pediatric Dermatology at the University of Montpellier &mdash; where I first encountered the particular discipline of treating children whose skin tells a story they cannot yet speak for themselves.</p>
+    <p class="fade-in">I returned to Morocco as Chief of Dermatology at Mohamed V Hospital, where I built clinical research infrastructure in a setting that demanded resourcefulness before sophistication. I designed investigator-initiated trials with the Moroccan Ministry of Health and pharmaceutical partners, enrolled patients in five months where protocols anticipated twelve, and saw two hundred patients a week while publishing in international journals. The work was urgent. The work was real.</p>
+
+    <!-- ACT II -->
+    <div class="act-separator"></div>
+    <h2 class="act-heading fade-in">
+        <span class="act-number">Act II</span>
+        The Turning Point
+    </h2>
+    <p class="fade-in">In 2016, I arrived at Icahn School of Medicine at Mount Sinai in New York &mdash; a city that, like Marrakech, reveals its character not in its monuments but in the density of its contradictions.</p>
+    <p class="fade-in">I joined the Waldman Department of Dermatology as a Clinical Research Fellow in Immunodermatology, under the mentorship of Dr. Mark Lebwohl &mdash; a luminary in dermatology whose name is inseparable from the modern history of psoriasis therapeutics. I was immersed in Phase III clinical trials investigating the next generation of biologic therapies targeting IL-17 and IL-23 pathways: the very architecture of cutaneous inflammation. Dr. Lebwohl taught me the art of the long view in clinical research &mdash; that a single trial is a chapter, not a conclusion, and that the measure of a therapy is not its pivotal p-value but the life it returns to the patient. It was work that demanded both the clinician's eye and the trialist's discipline: enrolling patients whose skin told one story while their immune system told another, and designing studies precise enough to hear both. He remains my mentor in the truest sense &mdash; the one who showed me that rigour and humanity are not opposing forces in drug development, but the same force, properly directed.</p>
+    <p class="fade-in">In parallel, alongside Dr. Emma Guttman-Yassky, I stepped into the rare privilege of witnessing a therapeutic paradigm shift from within. I was a veteran of the pivotal dupilumab programme: the Phase III trials that would establish Dupixent as the first FDA-approved biologic for atopic dermatitis, redrawing the standard of care for millions. I helped design protocols, define efficacy endpoints aligned with FDA requirements, and contributed to the regulatory submissions that carried this molecule from hypothesis to prescription pad.</p>
+    <p class="fade-in">But it was precisely inside the architecture of randomised controlled trials that I first heard the question that would redirect everything: <em>What happens when the trial ends and the patient goes home?</em></p>
+    <p class="fade-in">The RCT is a cathedral of internal validity. It tells you what works under controlled conditions. It does not tell you what works in the chaos of real life &mdash; in a patient whose adherence falters, whose comorbidities compound, whose genome disagrees with the prescription. That question became the inciting incident of my second act.</p>
+
+    <!-- ACT III -->
+    <div class="act-separator"></div>
+    <h2 class="act-heading fade-in">
+        <span class="act-number">Act III</span>
+        The Causal Thinker
+    </h2>
+    <p class="fade-in">I entered the PhD programme in Clinical Research at Icahn School of Medicine at Mount Sinai to pursue that question with the rigour it demanded. My dissertation applies causal inference to cardiovascular disease prevention, using one of the largest, most diverse biomedical datasets in history.</p>
+    <p class="fade-in">The specific inquiry: whether a polypill combining antihypertensive and lipid-lowering therapies can prevent coronary artery disease more effectively than conventional approaches &mdash; and whether your genome modifies that effect. I employ multiple causal inference frameworks and compare what each reveals, because when different causal architectures converge, you have evidence; when they diverge, you have the beginning of genuine scientific understanding.</p>
+    <p class="fade-in">I also investigate whether specific genomic variants modify the polypill's effect &mdash; testing whether what we call prevention should, in truth, be called precision.</p>
+    <p class="fade-in">Along the way, I earned a Professional Certificate in Applied Data Science from MIT, because the question demanded tools my medical training had not given me.</p>
+
+    <!-- ACT IV -->
+    <div class="act-separator"></div>
+    <h2 class="act-heading fade-in">
+        <span class="act-number">Act IV</span>
+        The Teacher, The Ethicist, The Builder
+    </h2>
+    <p class="fade-in">Research without transmission is soliloquy. I have taught because the methods that matter most are the ones that survive their author.</p>
+    <p class="fade-in">At the University Mohammed VI Polytechnic (UM6P) in Benguerir, I served as Visiting Professor of Clinical Research Methods and Dermatology, developing coursework on trial design, research ethics, and data analysis for medical and pharmacy students. At Mount Sinai, I served as Teaching Assistant for the &ldquo;Spectrum of Methods in Clinical Research&rdquo; programme, delivered lectures on Patient-Reported Outcomes in Clinical Trials, and mentored students through the full arc of a research question &mdash; from literature review to the defence of findings.</p>
+    <p class="fade-in">I am a member of the Bioethics Committee at Mount Sinai Hospital, where the questions are never comfortable: when does algorithmic efficiency become algorithmic injustice? At what threshold does predictive modelling cross from clinical tool to surveillance? I served on Mount Sinai's AI Governance Committee, and I co-chaired the Mount Sinai Ethics Student Organisation, because governance without the next generation's voice is merely legislation.</p>
+    <p class="fade-in">If Professor Hassam taught me to read the skin and Dr. Lebwohl taught me to test the treatment, it was Dr. Rosamond Rhodes who taught me to interrogate the interrogator. She is, in the most literal sense, bioethics made flesh &mdash; a philosopher whose presence in a room changes the quality of the questions asked in it. Under her influence, I learned that the most dangerous moment in research is not when you are wrong, but when you are right and have stopped asking whether you deserve to be. She instilled in me an unsparing discipline: to be the first and most relentless critic of my own work, to hold my conclusions to a standard that would survive not merely peer review but moral scrutiny. Every ethical question I now bring to a dataset, every pause before a conclusion, carries her fingerprint. I owe her a debt that compounds with interest.</p>
+    <p class="fade-in">I have written a book chapter on the placebo effect in clinical trials &mdash; published by Vasile Goldis University Press &mdash; exploring how explainable AI can reduce placebo bias and improve data transparency. And I have presented original work on contrastive learning for skin disease classification at the International Conference on AI in the Age of Digital Transformation, because the discipline that trained my eyes deserves the methods that sharpen them.</p>
+
+    <!-- ACT V -->
+    <div class="act-separator"></div>
+    <h2 class="act-heading fade-in">
+        <span class="act-number">Act V</span>
+        The Thread That Holds
+    </h2>
+    <p class="fade-in">Before all of this, I founded Lueur d'Espoir &mdash; <em>Glimpse of Hope</em> &mdash; a nonprofit organisation advancing healthcare access for underserved communities. I organised at COP21 and COP22 because climate is a determinant of disease long before it becomes a political abstraction. I mentored young women through the New York Academy of Sciences and the GEM programme at Mount Sinai, because the pipeline matters as much as the discovery.</p>
+    <p class="fade-in">I speak English, French, Arabic, Darija, Amazigh, and some Spanish &mdash; and wish I spoke more. Not as professional assets, but as the natural consequence of a life lived across Marrakech, Rabat, Montpellier, and New York. Each language carries a clinical epistemology of its own: a Moroccan patient describes pain differently from a French one, and differently still from a New Yorker. Causal inference must account for this, or it is merely arithmetic with a philosophical alibi.</p>
+
+    <!-- CLOSING -->
+    <div class="act-separator"></div>
+    <h2 class="act-heading fade-in" style="margin-top: 3.5rem;">
+        <span class="act-number">The Open Resolution</span>
+    </h2>
+    <p class="fade-in">I am a physician who became a scientist who became a causal thinker &mdash; and who never stopped being a physician. My work sits at the intersection of clinical medicine, causal inference, explainable AI, and the lived complexity of patients across three continents. I do not believe in the separation of rigour and compassion. I believe the best science is the kind that remembers it exists for someone.</p>
+    <p class="fade-in">This blog is called <em>Causal Threads</em> because causation, like the zellige of my city, is a pattern made visible only when you understand the geometry beneath. Every post here is an attempt to trace one such thread &mdash; from correlation to cause, from data to decision, from the abstract to the human.</p>
+    <p class="fade-in" style="font-family: 'Playfair Display', serif; font-style: italic; color: var(--accent); font-size: 1.1rem; margin-top: 2rem;">The thread continues.</p>
+
+    <!-- SIGNATURE -->
+    <div class="signature fade-in">
+        <p class="signature-name">Dr. Hafsa Benzzi</p>
+        <p class="signature-title">
+            Board-Certified Dermatologist &middot; PhD Candidate, Clinical Research<br>
+            Icahn School of Medicine at Mount Sinai
+        </p>
+    </div>
+
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+    <div class="footer-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="https://scholar.google.com" target="_blank">Google Scholar</a>
+        <a href="https://github.com" target="_blank">GitHub</a>
+        <a href="mailto:hafsa.benzzi@icahn.mssm.edu">Contact</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Dr. Hafsa Benzzi &middot; Causal Threads &middot; Built with intention</p>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+    // Scroll shadow on nav
+    window.addEventListener('scroll', () => {
+        document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
